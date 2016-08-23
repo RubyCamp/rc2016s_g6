@@ -6,5 +6,4 @@ Window.height = 600
 
 Window.loop do
 	break if Input.key_push? K_ESCAPE
-	
 end
