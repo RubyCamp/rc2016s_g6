@@ -83,4 +83,6 @@ Ruby合宿
 〇タイトル
 　・最初に表示されるスペースを押したらゲームスタートする
 
-testyamada
+
+directer.rb
+　・はシングルトンをrequirしてmapとplayerを包括する
