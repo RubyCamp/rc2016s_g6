@@ -39,9 +39,9 @@ class Director
 #		@characters += @enemies
 		@player = Player.new
 		@characters << @player
-#		@characters.each do |char|
-#			char.target = @render_target
-#		end
+		@characters.each do |char|
+			char.target = @render_target
+		end
 
 	end
 
@@ -55,13 +55,10 @@ class Director
 #		Sprite.check(@enemies. @player)
 #		Sprite.check(@player, @takaras)
 		compact
-		@render_target = @map.draw
-#		@render_target.draw(0,0,@map.draw)
-#		@render_target2.draw(0,0,@map.draw)
+		@render_target.draw(0,0,@map.draw)
 
-
-		Window.draw(@x,@y,@render_target)
 		Sprite.draw(@characters)
+		Window.draw(@x,@y,@render_target)
 #		@info_window.draw
 	end
 
