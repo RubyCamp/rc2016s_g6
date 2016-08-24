@@ -16,6 +16,7 @@ class Director
 	attr_reader :map, :same, :player, :time_count
 
 	def initialize
+		@font = Font.new(25)
 		@start_time = Time.now
 		@time_count = TIME_LIMIT
 		@map = Map.new("images/map.dat")
@@ -47,7 +48,7 @@ class Director
 		@ghosts = []
 		pos = setpos
 		@objects << Ginchaku.new(pos[0], pos[1])
-		3.times { @objects << Awa.new(rand(@map.width), rand(@map.height)) }
+		3.times { @objects << Awa.new(0, 0) }
 		@characters += @objects
 		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
 		@characters += @enemies
@@ -87,6 +88,7 @@ class Director
 		Sprite.draw(@characters)
 		Window.draw(-@player.pos_x,-@player.pos_y,@render_target)
 		@info_window.draw
+		Window.draw_font(10, 550,"#{Window.real_fps}",@font)
 		if game_over?
 			@time_count = 0
 			Scene.set_current_scene(:ending)
