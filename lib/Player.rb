@@ -8,6 +8,7 @@ class Player < Sprite
     @center_y = Window.height/2 - image.height/2
     super(@center_x, @center_y, image)
     @life = 100
+    @cnt = 0 #ライフを減少させるまでのカウント
     @score = 0
 		@font = Font.new(48)
     @dx = 0
@@ -17,8 +18,8 @@ class Player < Sprite
   end
 
   def update
-    # @life -= 0.1 #時間経過でライフ減少
-    return if @life <= 0
+    self.life_decrease #時間経過でライフ減少
+    vanish if @life <= 0
     map = Director.instance.map
     dx,dy,sp = @dx,@dy,10
     dx = -sp   if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
@@ -59,6 +60,14 @@ class Player < Sprite
     @pos_y -= dy
     self.x -= dx
     self.y -= dy
+  end
+
+  def life_decrease
+    @cnt += 1
+    if @cnt > 10
+      @life -= 1
+      @cnt = 0
+    end
   end
 
   # 当たり判定

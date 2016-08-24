@@ -94,16 +94,29 @@ class Same < Sprite
  		x = self.x - player.x
  		y = self.y - player.y
 
- 		if x > 0
- 			self.x -= self.dash_dx if map.movable?(self.x - self.center_x, self.y)
- 		elsif x < 0
- 			self.x += self.dash_dx if map.movable?(self.x + self.center_x, self.y)
+ 		if x > 0 && self.movable?(map, :left, self.dash_dx)
+ 			self.x -= self.dash_dx #if map.movable?(self.x - self.dash_dx, self.y)
+ 		elsif x < 0 && self.movable?(map, :light, self.dash_dx)
+ 			self.x += self.dash_dx #if map.movable?(self.x + self.image.width + self.dash_dx, self.y)
  		end
 
- 		if y > 0
- 			self.y -= self.dash_dy if map.movable?(self.x, self.y - self.center_y)
- 		elsif y < 0
- 			self.y += self.dash_dy if map.movable?(self.x, self.y + self.center_y)
+ 		if y > 0 && self.movable?(map, :up, self.dash_dy)
+ 			self.y -= self.dash_dy #if map.movable?(self.x, self.y - self.dash_dy)
+ 		elsif y < 0 && self.movable?(map, :down, self.dash_dy)  
+ 			self.y += self.dash_dy #if map.movable?(self.x, self.y + self.image.height + self.dash_dy)
  		end
  	end
+
+  def movable?(map,d,sp) #(Director.instance.map,d方向,spスピード)
+    x,x_end = self.x , self.x+self.image.width
+    y,y_end = self.y , self.y+self.image.height
+    case d
+      when :left  then return map.movable?(x-sp, y) && map.movable?(x-sp, y_end-1)
+      when :right then return map.movable?(x_end+sp, y) && map.movable?(x_end+sp, y_end-1)
+      when :down  then return map.movable?(x, y_end+sp) && map.movable?(x_end-sp, y_end-1)
+      when :up    then return map.movable?(x, y-sp) && map.movable?(x_end, y-sp)
+      when :g     then return map.movable?(x, y_end) && map.movable?(x_end, y_end)
+    end
+  end
+
 end
