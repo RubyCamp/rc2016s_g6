@@ -1,4 +1,5 @@
-﻿class Map
+﻿require_relative 'graph'
+class Map
   # マップチップ毎の画像イメージ
   CELL_IMAGES = Image.loadToArray(File.join(File.dirname(__FILE__), "..", "images", "map_chips.png"), 4, 4)
 
@@ -45,8 +46,6 @@
   end
 
 
-  private
-
   # マップデータの読み込み
   def map_load(map_file)
     open(map_file).each do |line|
@@ -80,7 +79,7 @@
     g.get_route(start_id, goal_id)
   end
 
-  # 経路探索用のグラフの元データを作成
+   # 経路探索用のグラフの元データを作成
   def make_data
     data = {}
     @map_y_size.times do |y|
@@ -104,7 +103,6 @@
       end
     end
     return data
+    p data
   end
-
-
 end

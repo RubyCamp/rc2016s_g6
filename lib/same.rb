@@ -3,8 +3,11 @@ class Same < Sprite
 	attr_accessor :dx, :dy
 	attr_accessor :dash_dx, :dash_dy
 	#サメの索敵範囲
-	SEARCH_AREA_X = 32 * 3
-	SEARCH_AREA_Y = 32 * 2
+	SEARCH_AREA_X = 32 * 1
+	SEARCH_AREA_Y = 32 * 1
+
+	#どれだけ過去のプレイヤーの位置を追うか
+ 	PAST_DEPTH = 5
 
 	#今表示しているサメの画像
 	attr_accessor :image_num
@@ -31,6 +34,7 @@ class Same < Sprite
  		self.collision = [0, 0, image.width, image.height]
  		self.init_x, self.init_y = a, b
  		self.image_num = 0
+ 		@player_log = []
  	end
 
  	def update
@@ -38,6 +42,10 @@ class Same < Sprite
  		map = Director.instance.map
  		#self.collision = [self.x, self.y, self.x + 64, self.y + 32]
  		#サメが移動する方向に合わせて画像を反転させる
+
+ 		@player_log << [player.x / 32, player.y / 32]
+ 		@player_log.shift if @player_log.size > PAST_DEPTH
+
  		if dx > 0
  			self.shark_direction = false
  		else
@@ -89,21 +97,24 @@ class Same < Sprite
  	def move
  		player = Director.instance.player
  		map = Director.instance.map
-
- 		x = self.x - player.x
- 		y = self.y - player.y
-
- 		if x > 0 && self.movable?(map, :left, self.dash_dx)
- 			self.x -= self.dash_dx #if map.movable?(self.x - self.dash_dx, self.y)
- 		elsif x < 0 && self.movable?(map, :right, self.dash_dx)
- 			self.x += self.dash_dx #if map.movable?(self.x + self.image.width + self.dash_dx, self.y)
+ 		start = [self.x / 32, self.y / 32]
+ 		goal = @player_log.first
+ 		route = map.calc_route(start, goal)
+ 		p route
+ 		dest = route[1]
+ 		dx = self.x - dest[0] * 32
+ 		dy = self.y - dest[1] * 32
+ 		if dx > 0
+ 			self.x -= self.dash_dx
+ 		elsif dx <= 0
+ 			self.x += self.dash_dx
+ 		end
+ 		if dy > 0
+ 			self.y -= self.dash_dy
+ 		elsif dy <= 0
+ 			self.y -= self.dash_dy
  		end
 
- 		if y > 0 && self.movable?(map, :up, self.dash_dy)
- 			self.y -= self.dash_dy #if map.movable?(self.x, self.y - self.dash_dy)
- 		elsif y < 0 && self.movable?(map, :down, self.dash_dy)  
- 			self.y += self.dash_dy #if map.movable?(self.x, self.y + self.image.height + self.dash_dy)
- 		end
  	end
 
   def movable?(map,d,sp) #(Director.instance.map,d方向,spスピード)
