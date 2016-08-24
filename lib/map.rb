@@ -9,6 +9,7 @@
   def initialize(map_file)
     @map_data = []
     map_load(map_file)
+    @target = RenderTarget.new(800,600)
   end
 
   # マップ全体の描画
@@ -18,6 +19,7 @@
         draw_cell(x, y)
       end
     end
+    return @target
   end
 
   # 任意の座標x, y におけるマップチップの種類を取得
@@ -49,7 +51,7 @@
   # マップの1マスの描画
   def draw_cell(x, y)
     image = CELL_IMAGES[self[x, y]]
-    Window.draw(x * image.width, y * image.height, image)
+    @target.draw(x * image.width, y * image.height, image)
   end
 
 
