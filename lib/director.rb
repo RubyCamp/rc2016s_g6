@@ -1,18 +1,17 @@
 ﻿require 'singleton'
-#require_relative 'Ginchaku'
+require_relative 'Ginchaku'
 require_relative 'map'
-#require_relative 'Obake'
+require_relative 'Obake'
 require_relative 'Player'
-require_relative 'Shame'
-#require_relative 'Takara'
-#require_relative 'awa'
-#require_relative 'esa'
+require_relative 'Same'
+require_relative 'Takara'
+require_relative 'awa'
+require_relative 'esa'
 
 class Director
 	TIME_LIMIT = 1000000
 	include Singleton
-	attr_reader :map, :shame, :player
-#:player
+	attr_reader :map, :same, :player
 
 	def initialize
 		@start_time = Time.now
@@ -25,25 +24,28 @@ class Director
 #		@info_window = InfoWindow.new()
 		@characters = []
 		@takaras = []
-#		10.times do
-#			point = [] #場所ランダム
-#			if 
-#				redo
-#			end
-#			@takaras << Takara.new()	#引数ううう
-#		end
-#		@characters += @takaras
+		points = []
+		10.times do
+			point = [rand(@map.width), rand(@map.height)] #場所ランダム
+			if points.any? == point
+				redo
+			end
+			points << point
+			@takaras << Takara.new(point[0],point[1])
+		end
+		@characters += @takaras
 		@enemies = []
-#		@enemies << Ginchaku.new()	#引数ううう
-#		2.times { @enemies << Shame.new() }	#引数ううう
-#		@characters += @enemies
+		@ghosts = []
+		6.times { @ghosts << Ghost.new(rand(@map.width), rand((@map.height*3/4)..@map.height)) }
+		@enemies += @ghosts
+		@enemies << Ginchaku.new(rand(@map.width), rand(@map.height))
+		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height*3/4)..@map.height)) }
+		@characters += @enemies
 		@player = Player.new
 		@characters << @player
 		@characters.each do |char|
 			char.target = @render_target
 		end
-
-
 	end
 
 	def play
@@ -53,9 +55,8 @@ class Director
 				
 		count_down
 		Sprite.update(@characters)
-#		Sprite.check(@enemies. @player)
-#		Sprite.check(@player, @takaras)
-		compact
+		Sprite.check(@characters, @characters, :hit, :attacked)
+		Sprite.clean(@characters)
 		@render_target.draw(0,0,@map.draw)
 
 		Sprite.draw(@characters)
@@ -71,13 +72,5 @@ class Director
 
 	def game_over?
 		return @time_count <= 0
-	end
-
-	def compact
-=begin
-		[@takaras, @characters].each do |sprites|
-			sprites.regect { |sprite| sprite.vanished? }
-		end
-=end
 	end
 end
