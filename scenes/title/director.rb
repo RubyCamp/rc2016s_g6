@@ -6,7 +6,7 @@ module Title
 
 		def play
 #			Window.draw(0, 0, @bg_img)
-			if Input.keyPush?()	#どのキー？
+			if Input.keyPush?(K_RETURN)
 				Scene.set_current_scene(:play)
 			end
 		end
