@@ -10,7 +10,7 @@ require_relative 'esa'
 require_relative 'info_window'
 
 class Director
-	TIME_LIMIT = 1000000
+	TIME_LIMIT = 100
 	include Singleton
 	attr_reader :map, :same, :player
 
@@ -70,6 +70,6 @@ class Director
 	end
 
 	def game_over?
-		return @time_count <= 0
+		return @time_count <= 0 || @player.life <= 0 || @player.vanished?
 	end
 end

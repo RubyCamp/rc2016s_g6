@@ -6,7 +6,7 @@ module Ending
 
 		def play
 #			Window.draw(0, 0, @bg_img)
-			if Input.keyPush?(K_RETURN)
+			if Input.keyPush?(K_SPACE)
 				exit
 			end
 		end
