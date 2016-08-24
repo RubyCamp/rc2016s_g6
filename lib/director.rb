@@ -24,14 +24,19 @@ class Director
 		@info_window = InfoWindow.new(@time_count)
 		@characters = []
 		@takaras = []
-		points = []
-		10.times do
-			point = [rand(@map.width), rand(@map.height)] #場所ランダム
-			if points.any? == point
-				redo
+		@possible = Array.new { Array.new(3) }
+		0.step(@map.map_x_size, 2) do |x|
+			(@map.map_y_size - 1).times do |y|
+				if @map.block?(x, y)
+					unless @map.block?(x, y - 1)
+						@possible << [0, x * 32, (y - 2) * 32]
+					end
+				end
 			end
-			points << point
-			@takaras << Takara.new(point[0],point[1])
+		end
+		10.times do
+			pos = setpos
+			@takaras << Takara.new(pos[0], pos[1])
 		end
 		@characters += @takaras
 		@enemies = []
@@ -40,9 +45,8 @@ class Director
 		@ghosts_pos_y = []
 		@ghosts_count = []
 		@ghosts = []
-#		6.times { @ghosts << Ghost.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
-#		@enemies += @ghosts
-		@objects << Ginchaku.new(rand(@map.width), rand(@map.height))
+		pos = setpos
+		@objects << Ginchaku.new(pos[0], pos[1])
 		3.times { @objects << Awa.new(rand(@map.width), rand(@map.height)) }
 		@characters += @objects
 		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
@@ -97,5 +101,14 @@ class Director
 
 	def game_over?
 		return @time_count <= 0 || @player.life <= 0 || @player.vanished?
+	end
+	def setpos
+		begin
+			point = rand(@possible.length)
+		end while @possible[point][0] == 1
+		@possible[point][0] = 1
+		x = @possible[point][1]
+		y = @possible[point][2]
+		return [x, y]
 	end
 end
