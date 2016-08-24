@@ -3,7 +3,7 @@ class Same < Sprite
 	attr_accessor :dx, :dy
 	attr_accessor :dash_dx, :dash_dy
 	#サメの索敵範囲
-	SEARCH_AREA_X = 32 * 3
+	SEARCH_AREA_X = 32 * 10
 	SEARCH_AREA_Y = 32 * 2
 
 	#今表示しているサメの画像
@@ -47,20 +47,21 @@ class Same < Sprite
  		self.image = @@images[self.image_num % 2]
 
 
- 		nx = self.x + self.center_x
- 		ny = self.y + self.center_y
- 		px = player.x
- 		py = player.y
+ 		nx = self.x + self.image.width / 2
+ 		ny = self.y + self.image.width / 2
+ 		px = player.x + player.image.width / 2
+ 		py = player.y + player.image.height / 2
 
  		#プレイヤーを見つけていない場合は左右を往復する
  		unless self.isFind_Player
  			#プレイヤーが目の前にいたら発見状態にする
  			if dx > 0 #右を向いている場合
- 				if (px - nx) < SEARCH_AREA_X && (py - ny).abs < SEARCH_AREA_Y
+
+ 				if (px - nx) < SEARCH_AREA_X && (px - nx) > 0 && (py - ny).abs < SEARCH_AREA_Y
  					self.isFind_Player = true
 	 			end
- 			else
-	 			if (px - nx) < -SEARCH_AREA_X && (py - ny).abs < SEARCH_AREA_Y
+ 			else	#左を向いている場合
+	 			if (px - nx) > -SEARCH_AREA_X && (px - nx) < 0 && (py - ny).abs < SEARCH_AREA_Y
  					self.isFind_Player = true 				
  				end
  			end
