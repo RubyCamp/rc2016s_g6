@@ -2,8 +2,8 @@ require 'singleton'
 #require_relative 'Ginchaku'
 require_relative 'map'
 #require_relative 'Obake'
-#require_relative 'Player'
-#require_relative 'Shame'
+require_relative 'Player'
+require_relative 'Shame'
 #require_relative 'Takara'
 #require_relative 'awa'
 #require_relative 'esa'
@@ -11,7 +11,7 @@ require_relative 'map'
 class Director
 	TIME_LIMIT = 1000000
 	include Singleton
-	attr_reader :map
+	attr_reader :map, :shame, :player
 #:player
 
 	def initialize
@@ -37,8 +37,8 @@ class Director
 #		@enemies << Ginchaku.new()	#引数ううう
 #		2.times { @enemies << Shame.new() }	#引数ううう
 #		@characters += @enemies
-#		@player = Player.new
-#		@characters << @player
+		@player = Player.new
+		@characters << @player
 #		@characters.each do |char|
 #			char.target = @render_target
 #		end
@@ -49,29 +49,20 @@ class Director
 		if game_over?
 			Scene.set_current_scene(:ending)
 		end
-		if Input.keyPush? (K_UP)
-			@y += 100
-		elsif Input.keyPush? (K_DOWN)
-			@y -= 100
-		elsif Input.keyPush? (K_RIGHT)
-			@x -= 100
-		elsif Input.keyPush? (K_LEFT)
-			@x += 100
-		end
 				
 		count_down
-#		Sprite.update(@characters)
+		Sprite.update(@characters)
 #		Sprite.check(@enemies. @player)
 #		Sprite.check(@player, @takaras)
-#		compact
+		compact
 		@render_target = @map.draw
 #		@render_target.draw(0,0,@map.draw)
 #		@render_target2.draw(0,0,@map.draw)
 
-#		Sprite.draw(@characters)
-		Window.draw(@x,@y,@render_target)
-#		@info_window.draw
 
+		Window.draw(@x,@y,@render_target)
+		Sprite.draw(@characters)
+#		@info_window.draw
 	end
 
 	private
