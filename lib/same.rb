@@ -13,17 +13,19 @@ class Same < Sprite
 
  	#サメを生成する座標値を引数として受け取る
  	def initialize(a, b)
+ 		super
  		self.image = Image.load("images/same.png")
  		self.image.set_color_key(C_WHITE)
- 		super
  		self.x, self.y = a, b
  		self.isFind_Player = false #プレイヤーを発見していない状態にする
  		self.dx, self.dy = 1, 1
  		self.dash_dx, self.dash_dy = 3, 3
  		self.shark_direction = true	#最初は右向き
+
  	end
 
  	def update
+ 		#self.collision = [self.x, self.y, self.x + 64, self.y + 32]
  		#サメが移動する方向に合わせて画像を反転させる
  		if dx > 0
  			self.shark_direction = false
@@ -54,11 +56,7 @@ class Same < Sprite
  		else		#敵を発見した場合
  			#不完全
  			#サメは敵を見つけるとスピードを上げてプレイヤーを追いかける
- 			self.dx *= 3
- 			if map.width >= self.x + self.center_x * 2 ||
- 				32 <= self.x + self.center_x
- 				self.dx = -self.dx
- 			end
+ 			self.move
  		end
  	end
 
@@ -74,21 +72,21 @@ class Same < Sprite
 
  	def move
  		player = Director.instance.player
- 		map = Director.instance.player
+ 		map = Director.instance.map
 
  		x = self.x - player.x
- 		y = self.y - palyer.y
+ 		y = self.y - player.y
 
  		if x > 0
- 			self.x -= self.dash_dx if map.movable?(self.x - 1, self.y)
+ 			self.x -= self.dash_dx if map.movable?(self.x - self.dash_dx, self.y)
  		elsif x < 0
- 			self.x += self.dash_dx if map.movable?(self.x + 1, self.y)
+ 			self.x += self.dash_dx if map.movable?(self.x + self.dash_dx, self.y)
  		end
 
  		if y > 0
- 			self.y -= self.dash_dy if map.movable?(self.x, self.y - 1)
+ 			self.y -= self.dash_dy if map.movable?(self.x, self.y - self.dash_dy)
  		elsif y < 0
- 			self.y += self.dash_dy if map.movable?(self.x, self.y - 1)
+ 			self.y += self.dash_dy if map.movable?(self.x, self.y + self.dash_dy)
  		end
  	end
 end
