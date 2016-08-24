@@ -1,5 +1,5 @@
 class Ghost < Sprite
-  UPDATE_THRESHOLD = 180
+  UPDATE_THRESHOLD = 600
   attr_accessor :dx, :dy
   def initialize(a, b)
     super
@@ -9,6 +9,8 @@ class Ghost < Sprite
     self.dx, self.dy = 0.5, 0.5
     Sprite#cllision=[self.center_x,self.center_y,16]
     @count = 0
+    @swi = 0
+    @warp_d = 200
   end
   def update
     self.move
@@ -37,15 +39,20 @@ class Ghost < Sprite
         end
 	
         if @count == 0
-	  if x > 0
-	    self.x = player.x - rand(150)-60
-	   elsif x < 0
-	     self.x = player.x + rand(150)-60
-	    elsif y > 0
-	      self.y = player.y - rand(150)-60
-	     elsif y < 0
-	      self.y = player.y + rand(150)-60
-	   end
+         swi = rand(3)
+         if swi == 0
+	   self.x = player.x + rand(-150)-@warp_d
+	   self.y = player.y + rand(150)+@warp_d
+	  elsif swi == 1
+           self.x = player.x + rand(150)+@warp_d
+	   self.y = player.y + rand(-150)-@warp_d
+	  elsif swi == 2
+	   self.x = player.x + rand(-150)-@warp_d
+	   self.y = player.y + rand(-150)-@warp_d
+	  elsif swi == 3
+	   self.x = player.x + rand(150)+@warp_d
+	   self.y = player.y + rand(150)+@warp_d
+	 end
 	end
   end
   def hit(obj)
