@@ -12,7 +12,7 @@ class Same < Sprite
   	return File.join(File.dirname(__FILE__), "..", "images", filename)
  	end
 
- 	#x座標とY座標を引数として受け取る
+ 	#サメを生成する座標値を引数として受け取る
  	def initialize(a, b)
  		image = Image.load(image_path("same.png"))
  		image.set_color_key(C_WHITE)
@@ -23,6 +23,13 @@ class Same < Sprite
  	end
 
  	def update
+ 		#サメが移動する方向に合わせて画像を反転させる
+ 		if dx > 0
+ 			self.scale_x = 1
+ 		else
+ 			self.scale_y = -1
+ 		end
+
  		player = Director.instance.player
  		map = Director.instance.map
 
@@ -54,3 +61,10 @@ class Same < Sprite
  		end
  	end
 
+ 	#あたり判定
+ 	def hit(obj)
+ 		#もしイソギンチャクにぶつかったら向きを変えて逃げる
+ 		if obj.is_a?(Ginchaku)
+ 			self.dx = -self.dx
+ 		end
+end
