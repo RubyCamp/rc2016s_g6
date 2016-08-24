@@ -55,7 +55,7 @@ class Director
 				
 		count_down
 		Sprite.update(@characters)
-		Sprite.check(@characters, @characters, :hit, :attacked)
+		Sprite.check(@characters, @characters)
 		Sprite.clean(@characters)
 		@render_target.draw(0,0,@map.draw)
 
