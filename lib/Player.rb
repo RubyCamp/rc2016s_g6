@@ -12,28 +12,24 @@ class Player < Sprite
   end
 
   def update
-    @life -= 0.1
+    # @life -= 0.1 #時間経過でライフ減少
     return if @life <= 0
     # map = Director.instance.map
-    # dy = -1 if Input.key_push?(K_UP) && map.movable?(self.x, self.y-1)
-    # dy = 1  if Input.key_push?(K_DOWN) && map.movable?(self.x, self.y+1)
-    # dx = 1  if Input.key_push?(K_RIGHT) && map.movable?(self.x+1, self.y)
-    # dx = -1 if Input.key_push?(K_LEFT) && map.movable?(self.x-1, self.y)
     dx = 0
     dy = -1                             #沈む
-    dx = 3 if Input.key_down?(K_LEFT)
-    dx = -3 if Input.key_down?(K_RIGHT)
-    dy -= 3 if Input.key_down?(K_DOWN)
-    dy += 3 if Input.key_down?(K_UP)
+    dx = 3 if Input.key_down?(K_LEFT) #&& map.movable?(self.x, self.y-1)
+    dx = -3 if Input.key_down?(K_RIGHT) #&& map.movable?(self.x, self.y+1)
+    dy -= 3 if Input.key_down?(K_DOWN) #&& map.movable?(self.x+1, self.y)
+    dy += 3 if Input.key_down?(K_UP) #&& map.movable?(self.x-1, self.y)
     move(dx, dy)
   end
 
   def move(dx,dy)
-    if (Window.ox + Window.width/2 - self.image.width/2 > 0 || dx < 0) && (Window.ox - Window.width*3/2 + self.image.width < 0 || dx > 0)
+    if (Window.ox + Window.width/2 - self.image.width/2 > 0 || dx < 0) && (Window.ox - Window.width*3/2 + self.image.width/2 < 0 || dx > 0)
       Window.ox -= dx
       self.x = @center_x + Window.ox
     end
-    if (Window.oy + Window.height/2 > 0 || dy < 0) && (Window.oy - Window.height*3/2 + self.image.height/2 < 0 || dy > 0)
+    if (Window.oy + Window.height/2 > 0 || dy < 0) && (Window.oy - Window.height*3/2  < 0 || dy > 0)
       Window.oy -= dy
       self.y = @center_y + Window.oy
     end
@@ -48,8 +44,11 @@ class Player < Sprite
         return
       end
     end
+    if obj.is_a?(Obake) #おばけにあたったとき
+      @score -= 10
+    end
     if obj.is_a?(Awa) #泡をとったとき
-      life = 100
+      life = 100.0
     end
     if obj.is_a?(Takara) #宝をとったとき
       @score += 100
