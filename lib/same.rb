@@ -3,7 +3,7 @@ class Same < Sprite
 	attr_accessor :dx, :dy
 	attr_accessor :dash_dx, :dash_dy
 	#サメの索敵範囲
-	SEARCH_AREA_X = 32 * 6
+	SEARCH_AREA_X = 32 * 3
 	SEARCH_AREA_Y = 32 * 2
 
 	#今表示しているサメの画像
@@ -34,6 +34,8 @@ class Same < Sprite
  	end
 
  	def update
+  	player = Director.instance.player
+ 		map = Director.instance.map
  		#self.collision = [self.x, self.y, self.x + 64, self.y + 32]
  		#サメが移動する方向に合わせて画像を反転させる
  		if dx > 0
@@ -44,11 +46,9 @@ class Same < Sprite
  		self.image_num += 0.1
  		self.image = @@images[self.image_num % 2]
 
- 		player = Director.instance.player
- 		map = Director.instance.map
 
- 		nx = self.x
- 		ny = self.y
+ 		nx = self.x + self.center_x
+ 		ny = self.y + self.center_y
  		px = player.x
  		py = player.y
 
@@ -70,7 +70,6 @@ class Same < Sprite
  				self.dx = -self.dx
  			end
  		else		#敵を発見した場合
- 			#不完全
  			#サメは敵を見つけるとスピードを上げてプレイヤーを追いかける
  			self.move
  		end
@@ -96,7 +95,7 @@ class Same < Sprite
 
  		if x > 0 && self.movable?(map, :left, self.dash_dx)
  			self.x -= self.dash_dx #if map.movable?(self.x - self.dash_dx, self.y)
- 		elsif x < 0 && self.movable?(map, :light, self.dash_dx)
+ 		elsif x < 0 && self.movable?(map, :right, self.dash_dx)
  			self.x += self.dash_dx #if map.movable?(self.x + self.image.width + self.dash_dx, self.y)
  		end
 
