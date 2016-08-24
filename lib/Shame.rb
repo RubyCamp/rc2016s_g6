@@ -55,7 +55,7 @@ class Same < Sprite
  			#不完全
  			#サメは敵を見つけるとスピードを上げてプレイヤーを追いかける
  			self.dx *= 3
- 			if Director.instance.map.WIDTH >= self.x + self.center_x * 2 ||
+ 			if map.width >= self.x + self.center_x * 2 ||
  				32 <= self.x + self.center_x
  				self.dx = -self.dx
  			end

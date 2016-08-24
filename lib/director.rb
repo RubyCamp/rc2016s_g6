@@ -1,4 +1,4 @@
-require 'singleton'
+﻿require 'singleton'
 #require_relative 'Ginchaku'
 require_relative 'map'
 #require_relative 'Obake'
@@ -42,6 +42,7 @@ class Director
 		@characters.each do |char|
 			char.target = @render_target
 		end
+
 
 	end
 
