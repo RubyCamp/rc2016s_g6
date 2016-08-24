@@ -28,8 +28,9 @@ class Takara < Sprite
  	end
 
  	def hit(obj)
-		self.visible = false
+
  		if obj.is_a?(Player)
+ 			self.visible = false
  			self.cnt = Window.fps * OBAKE_APPEAR_TIME
  		end
  	end
