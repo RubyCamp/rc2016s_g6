@@ -1,0 +1,2 @@
+class Awa < Sprite
+end
