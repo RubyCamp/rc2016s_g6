@@ -9,19 +9,33 @@ class Player < Sprite
     super(@center_x, @center_y, image)
     @life = 100.0
     @score = 0
+    @dx = 0
+    @dy = -1 #沈む
   end
 
   def update
     # @life -= 0.1 #時間経過でライフ減少
     return if @life <= 0
-    # map = Director.instance.map
-    dx = 0
-    dy = -1                             #沈む
-    dx = 3 if Input.key_down?(K_LEFT) #&& map.movable?(self.x, self.y-1)
-    dx = -3 if Input.key_down?(K_RIGHT) #&& map.movable?(self.x, self.y+1)
-    dy -= 3 if Input.key_down?(K_DOWN) #&& map.movable?(self.x+1, self.y)
-    dy += 3 if Input.key_down?(K_UP) #&& map.movable?(self.x-1, self.y)
+    map = Director.instance.map
+    dx,dy,sp = @dx,@dy,10
+    dx =  sp   if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
+    dx = -sp   if Input.key_down?(K_RIGHT) && self.movable?(map,:right,sp)
+    dy = -sp-1 if Input.key_down?(K_DOWN) && self.movable?(map,:down,sp)
+    dy = 0     unless self.movable?(map,:g,1)
+    dy = sp-1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp)
     move(dx, dy)
+  end
+
+  def movable?(map,d,sp) #(Director.instance.map,d方向,spスピード)
+    x,x_end = self.x, self.x+self.image.width
+    y,y_end = self.y, self.y+self.image.height
+    case d
+      when :left  then return map.movable?(x-sp, y) && map.movable?(x-sp, y_end-1)
+      when :right then return map.movable?(x_end+sp, y) && map.movable?(x_end+sp, y_end-1)
+      when :down  then return map.movable?(x, y_end+sp) && map.movable?(x_end-sp, y_end-1)
+      when :up    then return map.movable?(x, y-sp) && map.movable?(x_end, y-sp)
+      when :g     then return map.movable?(x, y_end) && map.movable?(x_end, y_end)
+    end
   end
 
   def move(dx,dy)
