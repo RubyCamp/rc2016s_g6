@@ -35,13 +35,16 @@ class Director
 		end
 		@characters += @takaras
 		@enemies = []
+		@objects = []
 		@ghosts_pos_x = []
 		@ghosts_pos_y = []
 		@ghosts_count = []
 		@ghosts = []
 #		6.times { @ghosts << Ghost.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
 #		@enemies += @ghosts
-		@enemies << Ginchaku.new(rand(@map.width), rand(@map.height))
+		@objects << Ginchaku.new(rand(@map.width), rand(@map.height))
+		3.times { @objects << Awa.new(rand(@map.width), rand(@map.height)) }
+		@characters += @objects
 		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
 		@characters += @enemies
 		@player = Player.new
