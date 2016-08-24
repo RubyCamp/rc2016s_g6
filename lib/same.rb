@@ -13,15 +13,16 @@ class Same < Sprite
 
  	#サメを生成する座標値を引数として受け取る
  	def initialize(a, b)
- 		super
+ 		super(a, b)
  		self.image = Image.load("images/same.png")
  		self.image.set_color_key(C_WHITE)
- 		self.x, self.y = a, b
  		self.isFind_Player = false #プレイヤーを発見していない状態にする
  		self.dx, self.dy = 1, 1
  		self.dash_dx, self.dash_dy = 3, 3
  		self.shark_direction = true	#最初は右向き
-
+ 		self.collision = [0, 0, image.width, image.height]
+ 		p image.width
+ 		p image.height
  	end
 
  	def update
@@ -36,10 +37,10 @@ class Same < Sprite
  		player = Director.instance.player
  		map = Director.instance.map
 
- 		nx = self.x# + self.center_x
- 		ny = self.y# + self.center_y
- 		px = player.x + player.center_x
- 		py = player.y + player.center_y
+ 		nx = self.x
+ 		ny = self.y
+ 		px = player.x
+ 		py = player.y
 
  		#プレイヤーを見つけていない場合は左右を往復する
  		unless self.isFind_Player
