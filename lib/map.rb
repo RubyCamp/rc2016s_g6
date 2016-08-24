@@ -1,8 +1,8 @@
-class Map
-  # ƒ}ƒbƒvƒ`ƒbƒv–ˆ‚Ì‰æ‘œƒCƒ[ƒW
+ï»¿class Map
+  # ãƒãƒƒãƒ—ãƒãƒƒãƒ—æ¯ã®ç”»åƒã‚¤ãƒ¡ãƒ¼ã‚¸
   CELL_IMAGES = Image.loadToArray(File.join(File.dirname(__FILE__), "..", "images", "map_chips.png"), 4, 4)
 
-  # @map_data ‚ÌŠe—v‘f‚ÌˆÓ–¡
+  # @map_data ã®å„è¦ç´ ã®æ„å‘³
   FLOOR = 0
   WALL = 1
 
@@ -11,7 +11,7 @@ class Map
     map_load(map_file)
   end
 
-  # ƒ}ƒbƒv‘S‘Ì‚Ì•`‰æ
+  # ãƒãƒƒãƒ—å…¨ä½“ã®æç”»
   def draw
     @map_x_size.times do |x|
       @map_y_size.times do |y|
@@ -20,7 +20,7 @@ class Map
     end
   end
 
-  # ”CˆÓ‚ÌÀ•Wx, y ‚É‚¨‚¯‚éƒ}ƒbƒvƒ`ƒbƒv‚Ìí—Ş‚ğæ“¾
+  # ä»»æ„ã®åº§æ¨™x, y ã«ãŠã‘ã‚‹ãƒãƒƒãƒ—ãƒãƒƒãƒ—ã®ç¨®é¡ã‚’å–å¾—
   def [](x, y)
     return @map_data[y][x].to_i
   end
@@ -36,7 +36,7 @@ class Map
 
   private
 
-  # ƒ}ƒbƒvƒf[ƒ^‚Ì“Ç‚İ‚İ
+  # ãƒãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
   def map_load(map_file)
     open(map_file).each do |line|
       cols = line.chomp.split(/\s*,\s*/).map(&:to_i)
@@ -46,7 +46,7 @@ class Map
     @map_y_size = @map_data.size
   end
 
-  # ƒ}ƒbƒv‚Ì1ƒ}ƒX‚Ì•`‰æ
+  # ãƒãƒƒãƒ—ã®1ãƒã‚¹ã®æç”»
   def draw_cell(x, y)
     image = CELL_IMAGES[self[x, y]]
     Window.draw(x * image.width, y * image.height, image)
