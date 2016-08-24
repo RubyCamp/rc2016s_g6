@@ -10,6 +10,9 @@ class Same < Sprite
 	attr_accessor :image_num
 
 	#サメの向きtrueは右,falseは左
+	#flagの値を変更したら向きが変わる
+	attr_accessor :shark_direction_flag
+	#サメの実際の向き
 	attr_accessor :shark_direction
 
 	#サメが生成されたときの初期値
@@ -31,6 +34,7 @@ class Same < Sprite
  		self.collision = [0, 0, image.width, image.height]
  		self.init_x, self.init_y = a, b
  		self.image_num = 0
+ 		self.shark_direction = 0
  	end
 
  	def update
@@ -39,9 +43,9 @@ class Same < Sprite
  		#self.collision = [self.x, self.y, self.x + 64, self.y + 32]
  		#サメが移動する方向に合わせて画像を反転させる
  		if dx > 0
- 			self.shark_direction = false
+ 			self.shark_direction_flag = true
  		else
-			self.shark_direction = true 
+			self.shark_direction_flag = false 
  		end
  		self.image_num += 0.1
  		self.image = @@images[self.image_num % 2]
@@ -75,6 +79,8 @@ class Same < Sprite
  			self.move
  		end
 
+ 		#サメの向きの変更を適用する
+ 		self.direction
  	end
 
  	#あたり判定
@@ -96,8 +102,10 @@ class Same < Sprite
 
  		if x > 0 && self.movable?(map, :left, self.dash_dx)
  			self.x -= self.dash_dx #if map.movable?(self.x - self.dash_dx, self.y)
- 		elsif x < 0 && self.movable?(map, :right, self.dash_dx)
+ 			self.shark_direction_flag = false
+ 		elsif x <= 0 && self.movable?(map, :right, self.dash_dx)
  			self.x += self.dash_dx #if map.movable?(self.x + self.image.width + self.dash_dx, self.y)
+ 			self.shark_direction_flag = true
  		end
 
  		if y > 0 && self.movable?(map, :up, self.dash_dy)
@@ -117,6 +125,21 @@ class Same < Sprite
       when :up    then return map.movable?(x, y-sp) && map.movable?(x_end, y-sp)
       when :g     then return map.movable?(x, y_end) && map.movable?(x_end, y_end)
     end
+  end
+
+  def direction
+  	if self.shark_direction_flag
+  		#フラグが右でかつ向きが変わっていなければ向きを変更する
+  		if self.shark_direction == 1
+  			self.shark_direction = 0
+  			self.scale_x = 1
+  		end
+  	else
+  		if self.shark_direction == 0
+  			self.shark_direction = 1
+  			self.scale_x = -1
+  		end
+  	end
   end
 
 end
