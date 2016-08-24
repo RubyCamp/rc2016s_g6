@@ -33,8 +33,8 @@ class Player < Sprite
       sp += 3
       @cnt += 2 #ライフ減少速度増加
     end
-    dx = -sp   if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
-    dx =  sp   if Input.key_down?(K_RIGHT) && self.movable?(map,:right,sp)
+    (dx = -sp ;self.scale_x =  1 ) if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
+    (dx =  sp ;self.scale_x = -1 ) if Input.key_down?(K_RIGHT) && self.movable?(map,:right,sp)
     dy =  sp+1 if Input.key_down?(K_DOWN) && self.movable?(map,:down,sp)
     dy = 0     unless self.movable?(map,:g,1)
     dy = -sp+1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp)
