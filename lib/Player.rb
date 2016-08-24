@@ -1,5 +1,5 @@
 class Player < Sprite
-  attr_reader :life, :score
+  attr_reader :life, :score, :x, :y
 
   def initialize(image = nil)
     image = Image.load("images/player.png")
@@ -11,6 +11,8 @@ class Player < Sprite
     @score = 0
     @dx = 0
     @dy = -1 #沈む
+    @x = 0
+    @y = 0
   end
 
   def update
@@ -39,13 +41,13 @@ class Player < Sprite
   end
 
   def move(dx,dy)
-    if (dx < 0 || Window.ox + Window.width/2 - self.image.width > 0) && ( dx > 0 || Window.ox - Window.width*3/2 + self.image.width < 0)
-      Window.ox -= dx
-      self.x = @center_x + Window.ox
+    if (dx < 0 || @x + Window.width/2 - self.image.width > 0) && ( dx > 0 || @x - Window.width*3/2 + self.image.width < 0)
+      @x -= dx
+      self.x = @center_x + @x
     end
-    if (dy < 0 || Window.oy + Window.height/2 > 0) && (dy > 0 || Window.oy - Window.height*3/2  < 0)
-      Window.oy -= dy
-      self.y = @center_y + Window.oy
+    if (dy < 0 || @y + Window.height/2 > 0) && (dy > 0 || @y - Window.height*3/2  < 0)
+      @y -= dy
+      self.y = @center_y + @y
     end
   end
 
