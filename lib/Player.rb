@@ -9,6 +9,7 @@ class Player < Sprite
     super(@center_x, @center_y, image)
     @life = 100.0
     @score = 0
+		@font = Font.new(48)
     @dx = 0
     @dy = -1 #沈む
     @x = 0
@@ -25,6 +26,9 @@ class Player < Sprite
     dy = -sp-1 if Input.key_down?(K_DOWN) && self.movable?(map,:down,sp)
     dy = 0     unless self.movable?(map,:g,1)
     dy = sp-1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp)
+    Window.draw_font(self.x-Window.width/3, self.y-Window.height/3, "life: #{@life.to_i}", @font, {z:255})
+    Window.draw_font(self.x+Window.width/3, self.y-Window.height/3, "score: #{@score}", @font, {z:255})
+
     move(dx, dy)
   end
 
