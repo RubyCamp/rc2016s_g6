@@ -12,7 +12,7 @@ require_relative 'info_window'
 class Director
 	TIME_LIMIT = 100
 	include Singleton
-	attr_reader :map, :same, :player
+	attr_reader :map, :same, :player, :time_count
 
 	def initialize
 		@start_time = Time.now
@@ -48,19 +48,18 @@ class Director
 	end
 
 	def play
-		if game_over?
-			Scene.set_current_scene(:ending)
-		end
-
 		count_down
 		Sprite.update(@characters)
 		Sprite.check(@characters, @characters)
 		Sprite.clean(@characters)
 		@render_target.draw(0,0,@map.draw)
-
 		Sprite.draw(@characters)
 		Window.draw(-@player.pos_x,-@player.pos_y,@render_target)
 		@info_window.draw
+		if game_over?
+			@time_count = 0
+			Scene.set_current_scene(:ending)
+		end
 	end
 
 	private

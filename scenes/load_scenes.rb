@@ -4,4 +4,4 @@ require_relative 'ending/director'
 
 Scene.add_scene(Title::Director.new, :title)
 Scene.add_scene(Director.instance, :play)
-Scene.add_scene(Ending::Director.new, :ending)
+Scene.add_scene(Ending.new, :ending)
