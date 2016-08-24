@@ -14,7 +14,6 @@ class Ghost < Sprite
     @@images[2].set_color_key(C_WHITE)
     self.x, self.y = a, b
     self.dx, self.dy = 1, 1
-    Sprite#cllision=[self.center_x,self.center_y,16]
     @count = 0
     @swi = 0
     @warp_d = 200
@@ -27,52 +26,56 @@ class Ghost < Sprite
     self.move
   end
   def move
-	player = Director.instance.player
- 	map = Director.instance.player
+    player = Director.instance.player
+ 	  map = Director.instance.player
 
- 		x = self.x - player.x
- 		y = self.y - player.y
+    x = self.x - player.x
+ 	  y = self.y - player.y
 
- 		if x > 0
- 			self.x -= self.dx
- 		elsif x < 0
- 			self.x += self.dx
- 		end
+ 	  if x > 0
+ 	    self.x -= self.dx
+ 	  elsif x < 0
+      self.x += self.dx
+ 	  end
 
- 		if y > 0
- 			self.y -= self.dy
- 		elsif y < 0
- 			self.y += self.dy
- 		end
-	@count += 1
-	if @count > UPDATE_THRESHOLD 
-	  @count = 0
-        end
-	
-        if @count == 0
-         swi = rand(3)
-         if swi == 0
-	   self.x = player.x + rand(-150)-@warp_d
-	   self.y = player.y + rand(150)+@warp_d
-	  elsif swi == 1
-           self.x = player.x + rand(150)+@warp_d
-	   self.y = player.y + rand(-150)-@warp_d
-	  elsif swi == 2
-	   self.x = player.x + rand(-150)-@warp_d
-	   self.y = player.y + rand(-150)-@warp_d
-	  elsif swi == 3
-	   self.x = player.x + rand(150)+@warp_d
-	   self.y = player.y + rand(150)+@warp_d
-	 end
-	end
+ 	  if y > 0
+      self.y -= self.dy
+ 	  elsif y < 0
+      self.y += self.dy
+ 	  end
+    @count += 1
+    if @count > UPDATE_THRESHOLD 
+      @count = 0
+    end
+
+    if @count == 0
+      swi = rand(3)
+      if swi == 0
+        self.x = player.x + rand(-150)-@warp_d
+        self.y = player.y + rand(150)+@warp_d
+       elsif swi == 1
+        self.x = player.x + rand(150)+@warp_d
+        self.y = player.y + rand(-150)-@warp_d
+      elsif swi == 2
+        self.x = player.x + rand(-150)-@warp_d
+        self.y = player.y + rand(-150)-@warp_d
+      elsif swi == 3
+        self.x = player.x + rand(150)+@warp_d
+        self.y = player.y + rand(150)+@warp_d
+      end
+    end
   end
+
   def hit(obj)
     if obj.is_a?(Player)
+
       self.dx, self.dy = 0.5, 0.5
       self.image = @@images[2]
      else
 	self.dx, self.dy = 1, 1
 	self.image = @@images[0]
+
+
     end
   end
 end
