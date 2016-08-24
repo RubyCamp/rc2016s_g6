@@ -9,7 +9,16 @@
   def initialize(map_file)
     @map_data = []
     map_load(map_file)
-    @target = RenderTarget.new(800,600)
+    @mapwidth = @map_x_size * CELL_IMAGES.first.width
+    @mapheight = @map_y_size * CELL_IMAGES.first.height
+    @target = RenderTarget.new(@mapwidth, @mapheight)
+  end
+
+  def width
+    @mapwidth
+  end
+  def height
+    @mapheight
   end
 
   # マップ全体の描画
@@ -53,6 +62,7 @@
     image = CELL_IMAGES[self[x, y]]
     @target.draw(x * image.width, y * image.height, image)
   end
+
 
 
 end

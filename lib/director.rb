@@ -17,9 +17,11 @@ class Director
 	def initialize
 		@start_time = Time.now
 		@time_count = TIME_LIMIT
-		@render_target = RenderTarget.new(800, 600)
-
-		@map = Map.new("images/map.dat")	
+		@map = Map.new("images/map.dat")
+		@render_target = RenderTarget.new(@map.width, @map.height)
+		@x = 0
+		@y = 0
+	
 #		@info_window = InfoWindow.new()
 		@characters = []
 		@takaras = []
@@ -47,14 +49,27 @@ class Director
 		if game_over?
 			Scene.set_current_scene(:ending)
 		end
+		if Input.keyPush? (K_UP)
+			@y += 100
+		elsif Input.keyPush? (K_DOWN)
+			@y -= 100
+		elsif Input.keyPush? (K_RIGHT)
+			@x -= 100
+		elsif Input.keyPush? (K_LEFT)
+			@x += 100
+		end
+				
 		count_down
 #		Sprite.update(@characters)
 #		Sprite.check(@enemies. @player)
 #		Sprite.check(@player, @takaras)
 #		compact
-		@render_target.draw(0,0,@map.draw)
+		@render_target = @map.draw
+#		@render_target.draw(0,0,@map.draw)
+#		@render_target2.draw(0,0,@map.draw)
+
 #		Sprite.draw(@characters)
-		Window.draw(0,0,@render_target)
+		Window.draw(@x,@y,@render_target)
 #		@info_window.draw
 
 	end
