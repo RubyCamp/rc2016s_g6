@@ -6,6 +6,7 @@ class Esa < Sprite
 	def initialize(a, b)
 		super
 		self.image = Image.load(image_path("esa.png"))
+		self.image.set_color_key(C_WHITE)
 		self.x, self.y = a, b
 	end
 
