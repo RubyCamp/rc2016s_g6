@@ -5,6 +5,7 @@ class Ghost < Sprite
     image.set_color_key(C_BLACK)
     super(x , y, image)
     @count = 0
+    @dx, @dy = 1, 1
   end
 
   def update
@@ -34,5 +35,7 @@ class Ghost < Sprite
       dx = dest[0]
       dy = dest[1]
     end
+    @x += @dx
+    @y += @dy
   end
  end
