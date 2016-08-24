@@ -52,11 +52,7 @@ class Player < Sprite
   # 当たり判定
   def hit(obj)
     if obj.is_a?(Same) #サメにあたったとき
-      @life -= 3
-      if @life <= 0
-        vanish
-        return
-      end
+      vanish
     end
     if obj.is_a?(Ghost) #おばけにあたったとき
       @score -= 10
