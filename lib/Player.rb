@@ -7,6 +7,13 @@ class Player < Sprite
     @center_x = Window.width/2  - image.width/2
     @center_y = Window.height/2 - image.height/2
     super(@center_x, @center_y, image)
+    @sounds = {}
+    @sounds[:eat] = Sound.new("music/eat-meat1.wav")
+    @sounds[:fear] = Sound.new("music/fear1.wav")
+    @sounds[:poin] = Sound.new("music/touch1.wav")
+    @sounds[:kira] = Sound.new("music/kira2.wav")
+    @sounds[:dive] = Sound.new("music/splash-big1.wav")
+    @sounds[:dive].play
     @life = 100
     @cnt = 0 #ライフを減少させるまでのカウント
     @score = 0
@@ -21,14 +28,16 @@ class Player < Sprite
     self.life_decrease #時間経過でライフ減少
     vanish if @life <= 0
     map = Director.instance.map
-    dx,dy,sp = @dx,@dy,10
+    dx,dy,sp = @dx,@dy,3
+    if Input.key_down?(K_C) # cダッシュ
+      sp += 3
+      @cnt += 2 #ライフ減少速度増加
+    end
     dx = -sp   if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
     dx =  sp   if Input.key_down?(K_RIGHT) && self.movable?(map,:right,sp)
     dy =  sp+1 if Input.key_down?(K_DOWN) && self.movable?(map,:down,sp)
     dy = 0     unless self.movable?(map,:g,1)
     dy = -sp+1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp)
-    # Window.draw_font(self.x-Window.width/3, self.y-Window.height/3, "life: #{@life.to_i}", @font, {z:255})
-    # Window.draw_font(self.x+Window.width/3, self.y-Window.height/3, "score: #{@score}", @font, {z:255})
 
     move(-dx, -dy)
   end
@@ -73,15 +82,21 @@ class Player < Sprite
   # 当たり判定
   def hit(obj)
     if obj.is_a?(Same) #サメにあたったとき
+      @sounds[:eat].play
       vanish
     end
     if obj.is_a?(Ghost) #おばけにあたったとき
+      @sounds[:fear].play
       @score -= 10
+    else
+      @sounds[:fear].stop
     end
     if obj.is_a?(Awa) #泡をとったとき
+      @sounds[:poin].play
       @life = 100
     end
     if obj.is_a?(Takara) #宝をとったとき
+      @sounds[:kira].play
       @score += 100
     end
   end
