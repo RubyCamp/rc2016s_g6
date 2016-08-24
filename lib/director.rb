@@ -7,6 +7,7 @@ require_relative 'Same'
 require_relative 'Takara'
 require_relative 'awa'
 require_relative 'esa'
+require_relative 'info_window'
 
 class Director
 	TIME_LIMIT = 1000000
@@ -18,10 +19,8 @@ class Director
 		@time_count = TIME_LIMIT
 		@map = Map.new("images/map.dat")
 		@render_target = RenderTarget.new(@map.width, @map.height)
-		@x = 0
-		@y = 0
 	
-#		@info_window = InfoWindow.new()
+		@info_window = InfoWindow.new(@time_count)
 		@characters = []
 		@takaras = []
 		points = []
@@ -36,10 +35,10 @@ class Director
 		@characters += @takaras
 		@enemies = []
 		@ghosts = []
-		6.times { @ghosts << Ghost.new(rand(@map.width), rand((@map.height*3/4)..@map.height)) }
+		6.times { @ghosts << Ghost.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
 		@enemies += @ghosts
 		@enemies << Ginchaku.new(rand(@map.width), rand(@map.height))
-		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height*3/4)..@map.height)) }
+		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
 		@characters += @enemies
 		@player = Player.new
 		@characters << @player
@@ -60,14 +59,14 @@ class Director
 		@render_target.draw(0,0,@map.draw)
 
 		Sprite.draw(@characters)
-		Window.draw(@x,@y,@render_target)
-#		@info_window.draw
+		Window.draw(-@player.x,-@player.y,@render_target)
+		@info_window.draw
 	end
 
 	private
 	def count_down
 		@time_count = TIME_LIMIT - (Time.now - @start_time).to_i
-#		@info_window.count = @time_count
+		@info_window.count = @time_count
 	end
 
 	def game_over?
