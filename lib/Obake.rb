@@ -2,22 +2,21 @@ class Ghost < Sprite
   attr_accessor :dx, :dy
   def initialize(a, b)
     super
-    image = Image.load("images/ghost.png")
-    image.set_color_key(C_BLACK)
+    self.image = Image.load("images/ghost2.png")
+    self.image.set_color_key(C_WHITE)
     self.x, self.y = a, b
-    self.dx, self.dy = 1, 1
+    self.dx, self.dy = 0.5, 0.5
+    Sprite#cllision=[self.center_x,self.center_y,16]
   end
-
   def update
-
+    self.move
   end
-
   def move
 	player = Director.instance.player
  	map = Director.instance.player
 
  		x = self.x - player.x
- 		y = self.y - palyer.y
+ 		y = self.y - player.y
 
  		if x > 0
  			self.x -= self.dx
@@ -32,7 +31,7 @@ class Ghost < Sprite
  		end
   end
   def hit(obj)
-    if obj.is_a?(player)
+    if obj.is_a?(Player)
     end
   end
 end
