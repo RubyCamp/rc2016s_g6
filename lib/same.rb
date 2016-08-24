@@ -6,23 +6,31 @@ class Same < Sprite
 	SEARCH_AREA_X = 32 * 6
 	SEARCH_AREA_Y = 32 * 2
 
+	#今表示しているサメの画像
+	attr_accessor :image_num
+
 	#サメの向きtrueは右,falseは左
 	attr_accessor :shark_direction
 
 	#サメが生成されたときの初期値
 	attr_accessor :init_x, :init_y
-
+	
+	@@images = []
  	#サメを生成する座標値を引数として受け取る
  	def initialize(a, b)
  		super(a, b)
- 		self.image = Image.load("images/same.png")
+ 		@@images << Image.load("images/same.png")
+ 		@@images << Image.load("images/same_open.png")
+ 		self.image = @@images[0]
  		self.image.set_color_key(C_WHITE)
+ 		@@images[1].set_color_key(C_WHITE)
  		self.isFind_Player = false #プレイヤーを発見していない状態にする
  		self.dx, self.dy = 1, 1
  		self.dash_dx, self.dash_dy = 3, 3
  		self.shark_direction = true	#最初は右向き
  		self.collision = [0, 0, image.width, image.height]
  		self.init_x, self.init_y = a, b
+ 		self.image_num = 0
  	end
 
  	def update
@@ -33,8 +41,8 @@ class Same < Sprite
  		else
 			self.shark_direction = true 
  		end
-
-
+ 		self.image_num += 0.1
+ 		self.image = @@images[self.image_num % 2]
 
  		player = Director.instance.player
  		map = Director.instance.map
