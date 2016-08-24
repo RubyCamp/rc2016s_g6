@@ -39,11 +39,11 @@ class Player < Sprite
   end
 
   def move(dx,dy)
-    if (Window.ox + Window.width/2 - self.image.width/2 > 0 || dx < 0) && (Window.ox - Window.width*3/2 + self.image.width/2 < 0 || dx > 0)
+    if (dx < 0 || Window.ox + Window.width/2 - self.image.width > 0) && ( dx > 0 || Window.ox - Window.width*3/2 + self.image.width < 0)
       Window.ox -= dx
       self.x = @center_x + Window.ox
     end
-    if (Window.oy + Window.height/2 > 0 || dy < 0) && (Window.oy - Window.height*3/2  < 0 || dy > 0)
+    if (dy < 0 || Window.oy + Window.height/2 > 0) && (dy > 0 || Window.oy - Window.height*3/2  < 0)
       Window.oy -= dy
       self.y = @center_y + Window.oy
     end
@@ -58,7 +58,7 @@ class Player < Sprite
         return
       end
     end
-    if obj.is_a?(Obake) #おばけにあたったとき
+    if obj.is_a?(Ghost) #おばけにあたったとき
       @score -= 10
     end
     if obj.is_a?(Awa) #泡をとったとき

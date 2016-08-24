@@ -5,7 +5,6 @@ class Takara < Sprite
 	#宝が当たってからカウント開始（-1で初期化する)
 	#-1の時は
 	attr_accessor :cnt
-	private :cnt
 
 	#お化けが出現するか否か
 	attr_accessor :isAppear
@@ -17,8 +16,11 @@ class Takara < Sprite
 	def initialize(a, b)
 		super
 		self.image = Image.load(image_path("takara.png"))
+		self.image.set_color_key(C_WHITE)
 		self.x, self.y = a, b
 		self.isAppear = false
+		self.cnt = -1
+
 	end
 
 	def image_path(filename)
@@ -26,15 +28,16 @@ class Takara < Sprite
  	end
 
  	def hit(obj)
-		self.visible = false
+
  		if obj.is_a?(Player)
+ 			self.visible = false
  			self.cnt = Window.fps * OBAKE_APPEAR_TIME
  		end
  	end
 
  	def update
- 		if self.cnt > 0
- 			self.cnt -= 1
+ 		if @cnt > 0
+ 			@cnt -= 1
  		end
 
  		#このときインスタンス事態は消えていない
