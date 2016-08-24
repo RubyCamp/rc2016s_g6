@@ -1,7 +1,7 @@
 class Scene
 	@@scenes = {}
 
-	@@current_scene_name = nill
+	@@current_scene_name = nil
 
 	def self.add_scene(scene_obj, scene_name)
 		@@scenes[scene_name.to_sym] = scene_obj
@@ -11,7 +11,7 @@ class Scene
 		@@current_scene_name = scene_name.to_sym
 	end
 
-	def self.play_sceme
-		@@scenes[@@current_scene_name].play_sceme
+	def self.play_scene
+		@@scenes[@@current_scene_name].play
 	end
 end
