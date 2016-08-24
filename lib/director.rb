@@ -1,7 +1,7 @@
 ﻿require 'singleton'
 require_relative 'Ginchaku'
 require_relative 'map'
-#require_relative 'Obake'
+require_relative 'Obake'
 require_relative 'Player'
 require_relative 'Same'
 require_relative 'Takara'
@@ -35,6 +35,9 @@ class Director
 		end
 		@characters += @takaras
 		@enemies = []
+		@ghosts = []
+		6.times { @ghosts << Ghost.new(rand(@map.width), rand((@map.height*3/4)..@map.height)) }
+		@enemies += @ghosts
 		@enemies << Ginchaku.new(rand(@map.width), rand(@map.height))
 		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height*3/4)..@map.height)) }
 		@characters += @enemies
