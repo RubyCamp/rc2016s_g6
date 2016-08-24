@@ -7,6 +7,8 @@ class Map
   FLOOR = 0
   WALL = 1
 
+  attr_reader :map_x_size, :map_y_size
+
   def initialize(map_file)
     @map_data = []
     map_load(map_file)
@@ -39,6 +41,10 @@ class Map
 
   def movable?(x, y)
     return self[x/32,y/32] == 0
+  end
+
+  def block?(x, y)
+    return self[x,y] == 1
   end
 
   def height
