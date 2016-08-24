@@ -1,5 +1,5 @@
 class Player < Sprite
-  attr_reader :life, :score, :x, :y
+  attr_reader :life, :score, :pos_x, :pos_y
 
   def initialize(image = nil)
     image = Image.load("images/player.png")
@@ -7,13 +7,13 @@ class Player < Sprite
     @center_x = Window.width/2  - image.width/2
     @center_y = Window.height/2 - image.height/2
     super(@center_x, @center_y, image)
-    @life = 100.0
+    @life = 100
     @score = 0
 		@font = Font.new(48)
     @dx = 0
     @dy = -1 #沈む
-    @x = 0
-    @y = 0
+    @pos_x = 0
+    @pos_y = 0
   end
 
   def update
@@ -45,14 +45,20 @@ class Player < Sprite
   end
 
   def move(dx,dy)
+=begin
     if (dx < 0 || @x + Window.width/2 > 0) && ( dx > 0 || @x - Window.width*3/2 + self.image.width < 0)
-      @x -= dx
+      @pos_x -= dx
       self.x += Window.width/2
     end
     if (dy < 0 || @y + Window.height/2 > 0) && (dy > 0 || @y - Window.height*3/2  < 0)
-      @y -= dy
+      @pos_y -= dy
       self.y += Window.height/2
     end
+=end
+    @pos_x += dx
+    @pos_y += dy
+    self.x += dx
+    self.y += dy
   end
 
   # 当たり判定
@@ -64,7 +70,7 @@ class Player < Sprite
       @score -= 10
     end
     if obj.is_a?(Awa) #泡をとったとき
-      life = 100.0
+      @life = 100
     end
     if obj.is_a?(Takara) #宝をとったとき
       @score += 100

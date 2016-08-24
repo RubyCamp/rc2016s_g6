@@ -59,7 +59,7 @@ class Director
 		@render_target.draw(0,0,@map.draw)
 
 		Sprite.draw(@characters)
-		Window.draw(-@player.x,-@player.y,@render_target)
+		Window.draw(@player.pos_x,@player.pos_y,@render_target)
 		@info_window.draw
 	end
 
