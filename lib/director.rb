@@ -21,7 +21,6 @@ class Director
 		@time_count = TIME_LIMIT
 		@map = Map.new("images/map.dat")
 		@render_target = RenderTarget.new(@map.width, @map.height)
-
 		@info_window = InfoWindow.new(@time_count)
 		@characters = []
 		@takaras = []
@@ -48,7 +47,7 @@ class Director
 		@ghosts = []
 		pos = setpos
 		@objects << Ginchaku.new(pos[0], pos[1])
-		3.times { @objects << Awa.new(0, 0) }
+		3.times { @objects << Awa.new(rand(@map.width), rand(@map.height)) }
 		@characters += @objects
 		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
 		@characters += @enemies
@@ -93,6 +92,18 @@ class Director
 			@time_count = 0
 			Scene.set_current_scene(:ending)
 		end
+	end
+
+	def pos_limit?(x,y,image_width, image_height)
+		x < 0 || x - image_width > @map.width || y < 0 || y - image_height > @map.height
+	end
+
+	def setpos_ex(image_width, image_height)
+		begin
+			x = rand(@map.width)
+			y = rand(@map.height)
+		end while pos_limit?(x,y,image_width,image_height) || @map.block?(x/32, y/32)
+		return [x,y]
 	end
 
 	private
