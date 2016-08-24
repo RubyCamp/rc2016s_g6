@@ -11,7 +11,7 @@ class Player < Sprite
     @score = 0
 		@font = Font.new(48)
     @dx = 0
-    @dy = -1 #沈む
+    @dy = 1 #沈む
     @pos_x = 0
     @pos_y = 0
   end
@@ -21,20 +21,20 @@ class Player < Sprite
     return if @life <= 0
     map = Director.instance.map
     dx,dy,sp = @dx,@dy,10
-    dx =  sp   if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
-    dx = -sp   if Input.key_down?(K_RIGHT) && self.movable?(map,:right,sp)
-    dy = -sp-1 if Input.key_down?(K_DOWN) && self.movable?(map,:down,sp)
+    dx = -sp   if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
+    dx =  sp   if Input.key_down?(K_RIGHT) && self.movable?(map,:right,sp)
+    dy =  sp+1 if Input.key_down?(K_DOWN) && self.movable?(map,:down,sp)
     dy = 0     unless self.movable?(map,:g,1)
-    dy = sp-1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp)
+    dy = -sp+1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp)
     # Window.draw_font(self.x-Window.width/3, self.y-Window.height/3, "life: #{@life.to_i}", @font, {z:255})
     # Window.draw_font(self.x+Window.width/3, self.y-Window.height/3, "score: #{@score}", @font, {z:255})
 
-    move(dx, dy)
+    move(-dx, -dy)
   end
 
   def movable?(map,d,sp) #(Director.instance.map,d方向,spスピード)
-    x,x_end = self.x + Window.width/2, self.x+self.image.width + Window.width/2
-    y,y_end = self.y + Window.height/2, self.y+self.image.height + Window.height/2
+    x,x_end = self.x , self.x+self.image.width
+    y,y_end = self.y , self.y+self.image.height
     case d
       when :left  then return map.movable?(x-sp, y) && map.movable?(x-sp, y_end-1)
       when :right then return map.movable?(x_end+sp, y) && map.movable?(x_end+sp, y_end-1)
@@ -55,10 +55,10 @@ class Player < Sprite
       self.y += Window.height/2
     end
 =end
-    @pos_x += dx
-    @pos_y += dy
-    self.x += dx
-    self.y += dy
+    @pos_x -= dx
+    @pos_y -= dy
+    self.x -= dx
+    self.y -= dy
   end
 
   # 当たり判定

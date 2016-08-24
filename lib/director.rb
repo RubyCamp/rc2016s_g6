@@ -19,7 +19,7 @@ class Director
 		@time_count = TIME_LIMIT
 		@map = Map.new("images/map.dat")
 		@render_target = RenderTarget.new(@map.width, @map.height)
-	
+
 		@info_window = InfoWindow.new(@time_count)
 		@characters = []
 		@takaras = []
@@ -51,7 +51,7 @@ class Director
 		if game_over?
 			Scene.set_current_scene(:ending)
 		end
-				
+
 		count_down
 		Sprite.update(@characters)
 		Sprite.check(@characters, @characters)
@@ -59,7 +59,7 @@ class Director
 		@render_target.draw(0,0,@map.draw)
 
 		Sprite.draw(@characters)
-		Window.draw(@player.pos_x,@player.pos_y,@render_target)
+		Window.draw(-@player.pos_x,-@player.pos_y,@render_target)
 		@info_window.draw
 	end
 
