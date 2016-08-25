@@ -69,8 +69,6 @@ class Director
 	def play
 		count_down
 		if Input.key_push(K_X)
-			if 
-			end
 		end
 		Sprite.update(@characters)
 		Sprite.check(@characters, @characters)
