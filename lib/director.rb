@@ -14,14 +14,19 @@ class Director
 	TIME_LIMIT = 100
 	GHOST_APPEAR_TIME = 1.5 * 60
 	ESA_LIMIT = 5
+	SAME = 5
+	AWA = 3
 	include Singleton
-	attr_reader :map, :same, :player, :time_count
+	attr_reader :map, :same, :player, :time_count, :esacount
 
 	def initialize
+		@newflg = true
+	end
+	def newall
 		@font = Font.new(25)
 		@start_time = Time.now
 		@time_count = TIME_LIMIT
-		@map = Map.new("images/map.dat")
+		@map = Map.new(MapSelect.instance.map)
 		@render_target = RenderTarget.new(@map.width, @map.height)
 		@info_window = InfoWindow.new(@time_count)
 		@characters = []
@@ -29,7 +34,7 @@ class Director
 		@map.map_x_size.times do |x|
 			@map.map_y_size.times do |y|
 				if @map.block(x, y) == 6
-					pos = [x * 32, y * 32 - (64 -32)]
+					pos = [x * 32, y * 32 - 55]
 					break
 				end
 			end
@@ -66,12 +71,12 @@ class Director
 		@ghosts = []
 		pos = setpos
 		@objects << Ginchaku.new(pos[0], pos[1])
-		3.times do
+		AWA.times do
 			pos = setpos_ex(64, 64)
 			@objects << Awa.new(pos[0], pos[1])
 		end
 		@characters += @objects
-		2.times do
+		SAME.times do
 			pos = setpos_ex(92, 46)
 			redo if pos[1] < Window.height * 3 / 4
 			@enemies << Same.new(pos[0], pos[1])
@@ -83,12 +88,20 @@ class Director
 			char.target = @render_target
 		end
 		@esas = []
+		@esacount = ESA_LIMIT
+
+		@red = Image.new(800, 600, [255, 0, 0])
 	end
 
 	def play
+		if @newflg
+			newall
+			@newflg = false
+		end
 		count_down
 		if Input.keyPush?(K_X)
-			if @esas.length < ESA_LIMIT
+			if @esacount > 0
+				@esacount -= 1
 				esa = Esa.new(@player.x, @player.y)
 				esa.target = @render_target
 				@esas << esa
@@ -123,10 +136,13 @@ class Director
 		Sprite.draw(@characters)
 		Window.draw(-@player.pos_x,-@player.pos_y,@render_target)
 		@info_window.draw
-		Window.draw_font(10, 550,"#{Window.real_fps}",@font)
+#		Window.draw_font(10, 550,"#{Window.real_fps}",@font)
 		if game_over? || @ship.clear
 			Scene.set_current_scene(:ending)
 		end
+
+
+		Window.draw_alpha(0, 0, @red, 100 - @player.life)
 	end
 
 	def pos_limit?(x,y,image_width, image_height)
@@ -138,8 +154,8 @@ class Director
 			x = rand(@map.width)
 			y = rand(@map.height)
 			block = false
-			3.times do |i|
-				2.times do |j|
+			4.times do |i|
+				3.times do |j|
 					if x + i * 32 < 0 || x + i * 32 > @map.width || y + j * 32 < 0 || y + j * 32 > @map.height
 						block = true
     				elsif @map.block(x / 32 + i, y / 32 + j) != 0

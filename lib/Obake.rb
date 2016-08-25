@@ -2,6 +2,7 @@ class Ghost < Sprite
   UPDATE_THRESHOLD = 600
   attr_accessor :dx, :dy
   attr_accessor :image_num
+  attr_accessor :ghost_direction_flag
   @@images = []
   def initialize(a, b)
     super
@@ -17,26 +18,30 @@ class Ghost < Sprite
     @count = 0
     @swi = 0
     @warp_d = 200
+    @toumei = 255
+    self.ghost_direction_flag = true
     self.image_num = 0
   end
   def update
     self.image_num += 0.1
     self.image = @@images[self.image_num % 2]
-
     self.move
+    self.direction
   end
   def move
     player = Director.instance.player
  	  map = Director.instance.player
 
     x = self.x - player.x
- 	  y = self.y - player.y
+    y = self.y - player.y
 
- 	  if x > 0
- 	    self.x -= self.dx
- 	  elsif x < 0
-      self.x += self.dx
- 	  end
+    if x > 0
+	self.x -= self.dx
+	self.ghost_direction_flag = true
+    elsif x < 0
+	self.x += self.dx
+	self.ghost_direction_flag = false
+    end
 
  	  if y > 0
       self.y -= self.dy
@@ -73,9 +78,15 @@ class Ghost < Sprite
       self.image = @@images[2]
      else
 	self.dx, self.dy = 1, 1
-	self.image = @@images[0]
-
-
     end
+  end
+
+  def direction
+  	if self.ghost_direction_flag
+  		#フラグが右でかつ向きが変わっていなければ向きを変更する
+  			self.scale_x = 1
+  	else
+  			self.scale_x = -1
+  	end
   end
 end

@@ -10,6 +10,11 @@ class Esa < Sprite
 		self.x, self.y = a, b
 	end
 
+	def hit(obj)
+		if obj.is_a?(Same)
+			vanish
+		end
+	end
 	def image_path(filename)
   	return File.join(File.dirname(__FILE__), "..", "images", filename)
  	end

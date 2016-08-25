@@ -4,14 +4,12 @@ class Score
 
 	#新しいスコアが引数
 	def initialize(score)
-		@io = File.open("lib/score.dat", "r+")
+		@io = File.open("lib/score.dat", "a+")
 		self.score = []
 		self.score << score
 		self.loadscore
-		p self.score
 		self.score.sort!
 		self.score.reverse!
-		p self.score
 		self.writescore
 	end
 
@@ -26,9 +24,14 @@ class Score
  
  	#スコアを書き込むメソッド
 	def writescore
-		@io.rewind
+		@io.truncate(0)
+		cnt = 0
 		@score.each do |s|
 			@io.puts(s.to_s)
+			cnt += 1
+			if cnt > 100
+				break
+			end
 		end
 		@io.close
 	end

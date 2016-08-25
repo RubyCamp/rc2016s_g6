@@ -4,9 +4,7 @@ class Player < Sprite
   def initialize(image = nil)
     image = Image.load("images/player.png")
     image.set_color_key(C_WHITE)
-    @center_x = Window.width/2  - image.width/2
-    @center_y = Window.height/2 - image.height/2
-    super(@center_x, @center_y, image)
+    super(800/2 - image.width/2, 600/2 - image.height/2, image)
     @sounds = {}
     @sounds[:eat] = Sound.new("music/eat-meat1.wav")
     @sounds[:fear] = Sound.new("music/fear1.wav")
@@ -28,29 +26,32 @@ class Player < Sprite
     self.life_decrease #時間経過でライフ減少
     vanish if @life <= 0
     map = Director.instance.map
-    dx,dy,sp = @dx,@dy,3
+    dx,dy,sp = @dx,@dy,2
     if Input.key_down?(K_C) # cダッシュ
-      sp += 3
+      sp += 2
       @cnt += 2 #ライフ減少速度増加
     end
     (dx = -sp ;self.scale_x =  1 ) if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
     (dx =  sp ;self.scale_x = -1 ) if Input.key_down?(K_RIGHT) && self.movable?(map,:right,sp)
-    dy =  sp+1 if Input.key_down?(K_DOWN) && self.movable?(map,:down,sp)
+    dy =  sp+1 if Input.key_down?(K_DOWN) && self.movable?(map,:down,sp+1)
     dy = 0     unless self.movable?(map,:g,1)
-    dy = -sp+1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp)
+    dy = -sp+1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp-1)
 
-    move(-dx, -dy)
+    #上に壁があるとき壁との距離分つめる
+    dy = self.y%32 if Input.key_down?(K_UP) && !self.movable?(map,:up,dy)
+
+    move(dx, dy)
   end
 
   def movable?(map,d,sp) #(Director.instance.map,d方向,spスピード)
-    x,x_end = self.x , self.x+self.image.width
-    y,y_end = self.y , self.y+self.image.height
+    x,x_mid,x_end = self.x ,self.x+self.image.width/2, self.x+self.image.width
+    y,y_mid,y_end = self.y ,self.y+self.image.height/2, self.y+self.image.height
     case d
-      when :left  then return map.movable?(x-sp, y) && map.movable?(x-sp, y_end-1)
-      when :right then return map.movable?(x_end+sp, y) && map.movable?(x_end+sp, y_end-1)
-      when :down  then return map.movable?(x, y_end+sp) && map.movable?(x_end-sp, y_end-1)
-      when :up    then return map.movable?(x, y-sp) && map.movable?(x_end, y-sp)
-      when :g     then return map.movable?(x, y_end) && map.movable?(x_end, y_end)
+    when :left  then return map.movable?(x-sp, y)       && map.movable?(x-sp, y_end-1)
+    when :right then return map.movable?(x_end+sp, y)   && map.movable?(x_end+sp, y_end-1)
+    when :down  then return map.movable?(x, y_end+sp-1) && map.movable?(x_end, y_end+sp-1)  && map.movable?(x_mid, y_end+sp-1)
+    when :up    then return map.movable?(x, y-sp)       && map.movable?(x_end, y-sp)        && map.movable?(x_mid, y-sp)
+    when :g     then return map.movable?(x, y_end)      && map.movable?(x_end, y_end)       && map.movable?(x_mid, y_end)
     end
   end
 
@@ -65,15 +66,15 @@ class Player < Sprite
       self.y += Window.height/2
     end
 =end
-    @pos_x -= dx
-    @pos_y -= dy
-    self.x -= dx
-    self.y -= dy
+    @pos_x += dx
+    @pos_y += dy
+    self.x += dx
+    self.y += dy
   end
 
   def life_decrease
     @cnt += 1
-    if @cnt > 10
+    if @cnt > 20
       @life -= 1
       @cnt = 0
     end
