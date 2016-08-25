@@ -14,6 +14,8 @@ class Director
 	TIME_LIMIT = 100
 	GHOST_APPEAR_TIME = 1.5 * 60
 	ESA_LIMIT = 5
+	SAME = 5
+	AWA = 3
 	include Singleton
 	attr_reader :map, :same, :player, :time_count
 
@@ -29,7 +31,7 @@ class Director
 		@map.map_x_size.times do |x|
 			@map.map_y_size.times do |y|
 				if @map.block(x, y) == 6
-					pos = [x * 32, y * 32 - (64 -32)]
+					pos = [x * 32, y * 32 - 55]
 					break
 				end
 			end
@@ -66,12 +68,12 @@ class Director
 		@ghosts = []
 		pos = setpos
 		@objects << Ginchaku.new(pos[0], pos[1])
-		3.times do
+		AWA.times do
 			pos = setpos_ex(64, 64)
 			@objects << Awa.new(pos[0], pos[1])
 		end
 		@characters += @objects
-		2.times do
+		SAME.times do
 			pos = setpos_ex(92, 46)
 			redo if pos[1] < Window.height * 3 / 4
 			@enemies << Same.new(pos[0], pos[1])
