@@ -4,7 +4,8 @@ class Score
 
 	#新しいスコアが引数
 	def initialize(score)
-		@io = File.open("lib/score.dat", "a+")
+		map = MapSelect.instance.map.sub("images/", "lib/").sub(".", "_score.")
+		@io = File.open(map, "a+")
 		self.score = []
 		self.score << score
 		self.loadscore
