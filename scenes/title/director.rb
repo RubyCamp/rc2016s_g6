@@ -7,7 +7,7 @@ module Title
 		def play
 			Window.draw(0, 0, @bg_img)
 			if Input.keyPush?(K_SPACE)
-				Scene.set_current_scene(:play)
+				Scene.set_current_scene(:tutorial)
 			end
 		end
 	end
