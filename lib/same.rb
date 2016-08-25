@@ -31,7 +31,7 @@ class Same < Sprite
  		self.dx, self.dy = [1,-1].sample, 1 #最初の進行方向をランダム
  		self.dash_dx, self.dash_dy = 3, 3
  		self.shark_direction = true	#最初は右向き
- 		self.collision = [0, 0, image.width, image.height]
+ 		self.collision = [self.image.width / 2, self.image.height / 2, 32]
  		self.init_x, self.init_y = a, b
  		self.image_num = 0
  		self.shark_direction = 0
