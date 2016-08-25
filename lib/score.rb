@@ -8,7 +8,10 @@ class Score
 		self.score = []
 		self.score << score
 		self.loadscore
+		p self.score
+		self.score.sort!
 		self.score.reverse!
+		p self.score
 		self.writescore
 	end
 
