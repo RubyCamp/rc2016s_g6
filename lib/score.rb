@@ -25,8 +25,13 @@ class Score
  	#スコアを書き込むメソッド
 	def writescore
 		@io.rewind
+		cnt = 0
 		@score.each do |s|
 			@io.puts(s.to_s)
+			cnt += 1
+			if cnt > 100
+				break
+			end
 		end
 		@io.close
 	end
