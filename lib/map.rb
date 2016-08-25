@@ -47,7 +47,7 @@
   end
 
   def block?(x, y)
-    return self[x,y] == 1
+    return self[x,y] != 0
   end
 
   def height
