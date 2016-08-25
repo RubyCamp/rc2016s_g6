@@ -1,10 +1,7 @@
 class Player < Sprite
   attr_reader :life, :score, :pos_x, :pos_y
-<<<<<<< HEAD
   LIFE = 100
-=======
   @@images = []
->>>>>>> 61d0be1524f0c96929793cb76df38b1d33bbd8e2
   def initialize(image = nil)
     super(400-32,300-16) #画面中央
     @@images << Image.load("images/player.png")
