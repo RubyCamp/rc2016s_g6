@@ -17,7 +17,7 @@ class Director
 	SAME = 5
 	AWA = 3
 	include Singleton
-	attr_reader :map, :same, :player, :time_count
+	attr_reader :map, :same, :player, :time_count, :esacount
 
 	def initialize
 		@font = Font.new(25)
@@ -85,12 +85,14 @@ class Director
 			char.target = @render_target
 		end
 		@esas = []
+		@esacount = ESA_LIMIT
 	end
 
 	def play
 		count_down
 		if Input.keyPush?(K_X)
-			if @esas.length < ESA_LIMIT
+			if @esacount > 0
+				@esacount -= 1
 				esa = Esa.new(@player.x, @player.y)
 				esa.target = @render_target
 				@esas << esa
