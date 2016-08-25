@@ -30,7 +30,7 @@ class MapSelect
 		Window.draw_font(300, 230, "<-  map  ->", @font)
 		Window.draw_font(300, 305, "#{@prev}", @fontsub)
 		Window.draw_font(370, 300, "[#{@select}]", @font)
-		Window.draw_font(470, 305, "#{@prev}", @fontsub)
+		Window.draw_font(470, 305, "#{@next}", @fontsub)
 #		Window.draw(0, 0, @bg_imag)
 		if Input.keyPush?(K_SPACE)
 			@map = "images/" << @mapfiles[@select].to_s
