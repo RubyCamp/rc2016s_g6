@@ -8,7 +8,9 @@ class Ship < Sprite
 		self.image = Image.load("images/hune.png")
 		self.image.set_color_key(C_WHITE)
 		@clear = false
-		self.collision = [-1, 0, self.image.width + 1, self.image.height + 1]
+		self.scale_x = 1.5
+		self.scale_y = 1.5
+		self.collision = [-1, 0, self.image.width + 1, self.image.height + 5]
 	end
 
 	def hit(obj)
