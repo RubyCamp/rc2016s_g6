@@ -11,7 +11,7 @@ class Tutorial
 				@bg_imag = Image.load("images/how_to_play2.png")
 				@count += 1
 			else
-				Scene.set_current_scene(:play)
+				Scene.set_current_scene(:mapselect)
 			end
 		end
 	end
