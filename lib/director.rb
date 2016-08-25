@@ -153,7 +153,7 @@ class Director
 	def setpos_ex(image_width, image_height)
 		begin
 			x = rand(@map.width)
-			y = rand(@map.height)
+			y = rand(@map.height - 32)
 			block = false
 			4.times do |i|
 				3.times do |j|
