@@ -46,8 +46,8 @@
     return self[x/32,y/32] == 0
   end
 
-  def block?(x, y)
-    return self[x,y] != 0
+  def block(x, y)
+    return self[x,y]
   end
 
   def height
