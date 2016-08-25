@@ -42,7 +42,7 @@ class Player < Sprite
     dy = -sp+1 if Input.key_down?(K_UP) && self.movable?(map,:up,sp-1)
 
     #上に壁があるとき壁との距離分つめる
-    dy = self.y%32 if Input.key_down?(K_UP) && !self.movable?(map,:up,dy)
+    dy = -self.y%32 if Input.key_down?(K_UP) && !self.movable?(map,:up,dy)
 
     move(dx, dy)
   end
