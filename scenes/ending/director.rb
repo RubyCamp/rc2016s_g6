@@ -13,11 +13,17 @@ class Ending
 			@score = Director.instance.player.score + Director.instance.time_count
 			@scorei  = Score.new(@score)
 			@ranking = @scorei.top_score
-			@string = @ranking.join("\n")
+#			str = []
+#			@ranking.each_with_index do |ranking, i|
+#				str << ranking
+#			end
+#			@string = @ranking.join("\n")
 		end
 #		Window.draw(0, 0, @bg_img)
-		Window.draw_font(400, 200, "得点: #{@score}", @font1)
-		Window.draw_font(500, 300, "ランキング: #{@string}", @font2)
+		Window.draw_font(500, 200, "得点: #{@score}", @font1)
+		@ranking.each_with_index do |rank, i|
+			Window.draw_font(500, 300 + i * 25, "#{i + 1}位: #{rank}", @font2)
+		end
 		if Input.keyPush?(K_SPACE)
 			exit
 		end
