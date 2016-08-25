@@ -3,7 +3,7 @@ class Same < Sprite
 	attr_accessor :dx, :dy
 	attr_accessor :dash_dx, :dash_dy
 
-	SEARCH_AREA_X = 32 * 10
+	SEARCH_AREA_X = 32 * 5
 	SEARCH_AREA_Y = 32 * 2
 
 	#今表示しているサメの画像
