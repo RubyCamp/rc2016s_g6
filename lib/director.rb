@@ -8,6 +8,7 @@ require_relative 'Takara'
 require_relative 'awa'
 require_relative 'esa'
 require_relative 'info_window'
+require_relative 'Ship'
 
 class Director
 	TIME_LIMIT = 100
@@ -24,6 +25,23 @@ class Director
 		@render_target = RenderTarget.new(@map.width, @map.height)
 		@info_window = InfoWindow.new(@time_count)
 		@characters = []
+		pos = [-1, -1]
+		@map.map_x_size.times do |x|
+			@map.map_y_size.times do |y|
+				if @map.block(x, y) == 6
+					pos = [x * 32, y * 32 - (64 -32)]
+					break
+				end
+			end
+			if pos != [-1, -1]
+				break
+			end
+		end
+		if pos != [-1, -1]
+			@ship = Ship.new(pos[0], pos[1])
+			@ship.target = @render_target
+			@characters << @ship
+		end
 		@takaras = []
 		@possible = Array.new { Array.new(3) }
 		0.step(@map.map_x_size, 2) do |x|
@@ -106,8 +124,7 @@ class Director
 		Window.draw(-@player.pos_x,-@player.pos_y,@render_target)
 		@info_window.draw
 		Window.draw_font(10, 550,"#{Window.real_fps}",@font)
-		if game_over?
-			@time_count = 0
+		if game_over? || @ship.clear
 			Scene.set_current_scene(:ending)
 		end
 	end
@@ -141,7 +158,12 @@ class Director
 	end
 
 	def game_over?
-		return @time_count <= 0 || @player.life <= 0 || @player.vanished?
+		flg = false
+		if @time_count <= 0 || @player.life <= 0 || @player.vanished?
+			@time_count = 0
+			flg = true
+		end
+		return flg
 	end
 	def setpos
 		begin
