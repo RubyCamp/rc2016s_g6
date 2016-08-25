@@ -3,12 +3,11 @@ class Player < Sprite
   LIFE = 100
   @@images = []
   def initialize(image = nil)
-    super(400-32,300-16) #画面中央
     @@images << Image.load("images/player.png")
+    super(Window.width/2-@@images[0].width/2,Window.height/2-@@images[0].height/2) #画面中央
     @@images << Image.load("images/player2.png")
     @@images.each{|i|i.set_color_key(C_WHITE)}
     self.image = @@images[0]
-    # super(800/2 - self.image.width/2, 600/2 - self.image.height/2)
     @sounds = {}
     @sounds[:eat] = Sound.new("music/eat-meat1.wav")
     @sounds[:fear] = Sound.new("music/fear1.wav")
