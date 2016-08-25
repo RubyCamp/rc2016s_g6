@@ -24,9 +24,9 @@ class MapSelect
 		elsif Input.keyPush?(K_LEFT)
 			@select -= 1
 		end
-		@prev = (@select - 1) % @mapfiles.length
-		@next = (@select + 1) % @mapfiles.length
 		@select %= @mapfiles.length
+		@prev = (@select + @mapfiles.length - 1) % @mapfiles.length
+		@next = (@select + 1) % @mapfiles.length
 		Window.draw_font(300, 230, "<-  map  ->", @font)
 		Window.draw_font(300, 305, "#{@prev}", @fontsub)
 		Window.draw_font(370, 300, "[#{@select}]", @font)
