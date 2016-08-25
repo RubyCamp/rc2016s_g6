@@ -1,6 +1,6 @@
 class Player < Sprite
   attr_reader :life, :score, :pos_x, :pos_y
-  LIFE = 200
+  LIFE = 100
   def initialize(image = nil)
     image = Image.load("images/player.png")
     image.set_color_key(C_WHITE)
