@@ -4,8 +4,9 @@ class Same < Sprite
 	attr_accessor :dash_dx, :dash_dy
 
 	SEARCH_AREA_X = 32 * 5
-	SEARCH_AREA_Y = 32 * 2
-	STOP_TIME = 40
+	SEARCH_AREA_Y = 32 * 1
+	STOP_TIME = 60
+	DX = 0.5
 	#今表示しているサメの画像
 	attr_accessor :image_num
 
@@ -28,7 +29,7 @@ class Same < Sprite
  		self.image.set_color_key(C_WHITE)
  		@@images[1].set_color_key(C_WHITE)
  		self.isFind_Player = false #プレイヤーを発見していない状態にする
- 		self.dx, self.dy = [1,-1].sample, 1 #最初の進行方向をランダム
+ 		self.dx, self.dy = [DX,-DX].sample, 1 #最初の進行方向をランダム
  		self.dash_dx, self.dash_dy = 3, 3
  		self.shark_direction = true	#最初は右向き
  		self.collision = [self.image.width / 2, self.image.height / 2, 23]

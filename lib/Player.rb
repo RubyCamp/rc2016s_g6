@@ -93,7 +93,7 @@ class Player < Sprite
     end
     if obj.is_a?(Ghost) #おばけにあたったとき
       @sounds[:fear].play
-      @score -= rand(1..5) + 20
+      @score -= rand(1..20) + 20
     else
       @sounds[:fear].stop
     end
