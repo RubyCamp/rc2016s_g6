@@ -157,17 +157,13 @@ class Director
 	end
 
 	def setpos
-		begin
-			point = rand(@possible.length)
-		end while @possible[point][0] == 1
-		x = @possible[point][1]
-		y = @possible[point][2]
+		point = rand(@possible.length)
+		x = @possible[point][0]
+		y = @possible[point][1]
 		d = dxdy(64)
-		2.times do |i|
-			2.times do |j|
-				while index = @possible.index([0, x - 32 + i * 64, y - 32 + j * 64]) do
-					@possible[index][0] = 1
-				end
+		4.times do |i|
+			4.times do |j|
+				@possible.delete([x - 32 + i * 32, y - 32 + j * 32])
 			end
 		end
 		return [x, y]
@@ -195,20 +191,20 @@ class Director
 
 	def possible_new
 		@possible = Array.new { Array.new(3) }
-		0.step(@map.map_x_size, 2) do |x|
-			(@map.map_y_size - 1).times do |y|
+		@map.map_x_size.times do |x|
+			@map.map_y_size.times do |y|
 				if x + 1 < @map.map_x_size && y - 2 >= 0 
 					if @map.block(x, y) == 1
 						if @map.block(x, y - 1) == 0 && @map.block(x + 1, y - 1) == 0
 							if map.block(x, y - 2) == 0 && @map.block(x + 1, y - 2) == 0
-								@possible << [0, x * 32, (y - 2) * 32]
+								@possible << [x * 32, (y - 2) * 32]
 							end
 						end
 					elsif @map.block(x - 1, y) == 1
 						x -= 1
 						if @map.block(x, y - 1) == 0 && @map.block(x + 1, y - 1) == 0
 							if map.block(x, y - 2) == 0 && @map.block(x + 1, y - 2) == 0
-								@possible << [0, x * 32, (y - 2) * 32]
+								@possible << [x * 32, (y - 2) * 32]
 							end
 						end
 					end
