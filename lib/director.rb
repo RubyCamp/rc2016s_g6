@@ -69,6 +69,7 @@ class Director
 	def play
 		count_down
 #		if Input.keyPush(K_X)
+
 #		end
 		Sprite.update(@characters)
 		Sprite.check(@characters, @characters)
@@ -115,7 +116,9 @@ class Director
 			block = false
 			3.times do |i|
 				2.times do |j|
-					if @map.block(x / 32 + i, y / 32 + j) != 0
+					if x + i * 32 < 0 || x + i * 32 > @map.width || y + j * 32 < 0 || y + j * 32 > @map.height
+						block = true
+    				elsif @map.block(x / 32 + i, y / 32 + j) != 0
 						block = true
 					end
 				end
