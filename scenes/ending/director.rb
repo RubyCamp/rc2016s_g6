@@ -20,7 +20,14 @@ class Ending #定数と@color1及び2の数字を変える
 
 	def play
 		if @score == nil
-			@score = Director.instance.player.score + Director.instance.time_count
+			life = Director.instance.player.life
+			if Director.instance.time_count == 0
+				@img = @img_gameover
+				life = 0
+			else
+				@img = @img_clear
+			end
+			@score = Director.instance.player.score + Director.instance.time_count + life
 			@scorei  = Score.new(@score)
 			@ranking = @scorei.top_score
 			@ranking.each_with_index do |score, rank|
@@ -29,11 +36,6 @@ class Ending #定数と@color1及び2の数字を変える
 					break
 				end
 				@string = "ランキング外"
-			end
-			if Director.instance.time_count == 0
-				@img = @img_gameover
-			else
-				@img = @img_clear
 			end
 		end
 		Window.draw(0, 0, @img)
