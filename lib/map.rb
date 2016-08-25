@@ -36,14 +36,14 @@
   # 任意の座標x, y におけるマップチップの種類を取得
   def [](x, y)
     if x < 0 || x > @map_x_size || y < 0 || y > @map_y_size
-      $stddrr.puts "ERROR:マップチップの取得に範囲外を指定している"
+      $stderr.puts "ERROR:マップチップの取得に範囲外を指定している"
       exit
     end
     return @map_data[y][x].to_i
   end
 
   def movable?(x, y)
-    return self[x/32,y/32] == 0
+    return self[x/32,y/32] == 0 || self[x/32,y/32] == 6
   end
 
   def block(x, y)
