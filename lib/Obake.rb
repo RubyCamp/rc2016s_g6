@@ -14,7 +14,7 @@ class Ghost < Sprite
     @@images[1].set_color_key(C_WHITE)
     @@images[2].set_color_key(C_WHITE)
     self.x, self.y = a, b
-    self.dx, self.dy = 1, 1
+    self.dx, self.dy = 0.8, 0.8
     @count = 0
     @swi = 0
     @warp_d = 200
@@ -74,10 +74,10 @@ class Ghost < Sprite
   def hit(obj)
     if obj.is_a?(Player)
 
-      self.dx, self.dy = 0.5, 0.5
+      self.dx, self.dy = 0.4, 0.4
       self.image = @@images[2]
      else
-	self.dx, self.dy = 1, 1
+	self.dx, self.dy = 0.8, 0.8
     end
   end
 
