@@ -11,7 +11,8 @@ require_relative 'info_window'
 
 class Director
 	TIME_LIMIT = 100
-	GHOST_APPEAR_TIME = 3 * 60
+	GHOST_APPEAR_TIME = 1.5 * 60
+	ESA_LIMIT = 5
 	include Singleton
 	attr_reader :map, :same, :player, :time_count
 
@@ -27,8 +28,8 @@ class Director
 		@possible = Array.new { Array.new(3) }
 		0.step(@map.map_x_size, 2) do |x|
 			(@map.map_y_size - 1).times do |y|
-				if @map.block?(x, y)
-					unless @map.block?(x, y - 1)
+				if @map.block(x, y) == 1
+					if @map.block(x, y - 1) == 0
 						@possible << [0, x * 32, (y - 2) * 32]
 					end
 				end
@@ -47,9 +48,16 @@ class Director
 		@ghosts = []
 		pos = setpos
 		@objects << Ginchaku.new(pos[0], pos[1])
-		3.times { @objects << Awa.new(rand(@map.width), rand(@map.height)) }
+		3.times do
+			pos = setpos_ex(64, 64)
+			@objects << Awa.new(pos[0], pos[1])
+		end
 		@characters += @objects
-		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
+		2.times do
+			pos = setpos_ex(92, 46)
+			redo if pos[1] < Window.height * 3 / 4
+			@enemies << Same.new(pos[0], pos[1])
+		end
 		@characters += @enemies
 		@player = Player.new
 		@characters << @player
@@ -60,6 +68,8 @@ class Director
 
 	def play
 		count_down
+#		if Input.keyPush(K_X)
+#		end
 		Sprite.update(@characters)
 		Sprite.check(@characters, @characters)
 		@takaras.each do |takara|
@@ -102,7 +112,15 @@ class Director
 		begin
 			x = rand(@map.width)
 			y = rand(@map.height)
-		end while pos_limit?(x,y,image_width,image_height) || @map.block?(x/32, y/32)
+			block = false
+			3.times do |i|
+				2.times do |j|
+					if @map.block(x / 32 + i, y / 32 + j) != 0
+						block = true
+					end
+				end
+			end
+		end while pos_limit?(x,y,image_width,image_height) || block
 		return [x,y]
 	end
 
