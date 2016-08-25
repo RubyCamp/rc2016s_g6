@@ -125,7 +125,7 @@ class Director
 		Sprite.draw(@characters)
 		Window.draw(-@player.pos_x,-@player.pos_y,@render_target)
 		@info_window.draw
-		Window.draw_font(10, 550,"#{Window.real_fps}",@font)
+#		Window.draw_font(10, 550,"#{Window.real_fps}",@font)
 		if game_over? || @ship.clear
 			Scene.set_current_scene(:ending)
 		end
