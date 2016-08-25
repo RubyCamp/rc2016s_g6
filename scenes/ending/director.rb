@@ -2,10 +2,10 @@ require_relative '../../lib/score'
 
 class Ending #定数と@color1及び2の数字を変える
 	X1 = 200
-	Y1 = 350
+	Y1 = 400
 	SIZE1 = 40
 	X2 = 500
-	Y2 = 350
+	Y2 = 400
 	SIZE2 = 30
 	BIRITU = 2
 	def initialize
