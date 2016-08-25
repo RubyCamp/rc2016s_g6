@@ -28,9 +28,9 @@ class Player < Sprite
     self.life_decrease #時間経過でライフ減少
     vanish if @life <= 0
     map = Director.instance.map
-    dx,dy,sp = @dx,@dy,3
+    dx,dy,sp = @dx,@dy,2
     if Input.key_down?(K_C) # cダッシュ
-      sp += 3
+      sp += 2
       @cnt += 2 #ライフ減少速度増加
     end
     (dx = -sp ;self.scale_x =  1 ) if Input.key_down?(K_LEFT) && self.movable?(map,:left,sp)
@@ -97,7 +97,7 @@ class Player < Sprite
     end
     if obj.is_a?(Takara) #宝をとったとき
       @sounds[:kira].play
-      @score += 100
+      @score += rand(1000)
     end
   end
 
