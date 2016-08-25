@@ -1,5 +1,7 @@
 class Ghost < Sprite
   UPDATE_THRESHOLD = 600
+  DX = 1.5
+  DY = 1.5
   attr_accessor :dx, :dy
   attr_accessor :image_num
   attr_accessor :ghost_direction_flag
@@ -14,7 +16,7 @@ class Ghost < Sprite
     @@images[1].set_color_key(C_WHITE)
     @@images[2].set_color_key(C_WHITE)
     self.x, self.y = a, b
-    self.dx, self.dy = 0.8, 0.8
+    self.dx, self.dy = DX, DY
     @count = 0
     @swi = 0
     @warp_d = 200

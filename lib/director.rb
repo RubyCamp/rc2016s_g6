@@ -11,8 +11,8 @@ require_relative 'info_window'
 require_relative 'Ship'
 
 class Director
-	TIME_LIMIT = 2150
-	GHOST_APPEAR_TIME = 1.5 * 60
+	TIME_LIMIT = 200
+	GHOST_APPEAR_TIME = 1 * 60
 	ESA_LIMIT = 5
 	SAME = 5
 	AWA = 4
