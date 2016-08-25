@@ -97,7 +97,7 @@ class Player < Sprite
     end
     if obj.is_a?(Takara) #宝をとったとき
       @sounds[:kira].play
-      @score += rand(1000)
+      @score += rand(100..1000)
     end
   end
 
