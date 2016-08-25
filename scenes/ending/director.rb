@@ -7,6 +7,7 @@ class Ending #定数と@color1及び2の数字を変える
 	X2 = 500
 	Y2 = 350
 	SIZE2 = 30
+	BIRITU = 2
 	def initialize
 		@color1 = [0,0,0]
 		@color2 = [0,0,0]
@@ -27,7 +28,7 @@ class Ending #定数と@color1及び2の数字を変える
 			else
 				@img = @img_clear
 			end
-			@score = Director.instance.player.score + Director.instance.time_count + life
+			@score = Director.instance.player.score + Director.instance.time_count * BIRITU + life
 			@scorei  = Score.new(@score)
 			@ranking = @scorei.top_score
 			@ranking.each_with_index do |score, rank|

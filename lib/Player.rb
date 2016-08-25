@@ -74,7 +74,7 @@ class Player < Sprite
 
   def life_decrease
     @cnt += 1
-    if @cnt > 10
+    if @cnt > 20
       @life -= 1
       @cnt = 0
     end
