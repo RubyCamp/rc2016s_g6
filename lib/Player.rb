@@ -87,7 +87,7 @@ class Player < Sprite
     end
     if obj.is_a?(Ghost) #おばけにあたったとき
       @sounds[:fear].play
-      @score -= 10
+      @score -= rand(1..5)
     else
       @sounds[:fear].stop
     end
@@ -97,7 +97,7 @@ class Player < Sprite
     end
     if obj.is_a?(Takara) #宝をとったとき
       @sounds[:kira].play
-      @score += 100
+      @score += 100 + obj.y
     end
   end
 
