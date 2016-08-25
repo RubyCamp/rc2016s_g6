@@ -1,6 +1,6 @@
 class Player < Sprite
   attr_reader :life, :score, :pos_x, :pos_y
-
+  LIFE = 200
   def initialize(image = nil)
     image = Image.load("images/player.png")
     image.set_color_key(C_WHITE)
@@ -12,7 +12,7 @@ class Player < Sprite
     @sounds[:kira] = Sound.new("music/kira2.wav")
     @sounds[:dive] = Sound.new("music/splash-big1.wav")
     @sounds[:dive].play
-    @life = 100
+    @life = LIFE
     @cnt = 0 #ライフを減少させるまでのカウント
     @score = 0
 		@font = Font.new(48)
@@ -88,13 +88,16 @@ class Player < Sprite
     end
     if obj.is_a?(Ghost) #おばけにあたったとき
       @sounds[:fear].play
-      @score -= rand(1..5)
+      @score -= rand(1..5) + 20
     else
       @sounds[:fear].stop
     end
     if obj.is_a?(Awa) #泡をとったとき
       @sounds[:poin].play
-      @life = 100
+      @life += 100
+      if @life > LIFE
+        @life = LIFE
+      end
     end
     if obj.is_a?(Takara) #宝をとったとき
       @sounds[:kira].play

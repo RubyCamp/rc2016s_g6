@@ -11,11 +11,12 @@ require_relative 'info_window'
 require_relative 'Ship'
 
 class Director
-	TIME_LIMIT = 100
+	TIME_LIMIT = 2150
 	GHOST_APPEAR_TIME = 1.5 * 60
 	ESA_LIMIT = 5
 	SAME = 5
-	AWA = 3
+	AWA = 4
+	TAKARA = 15
 	include Singleton
 	attr_reader :map, :same, :player, :time_count, :esacount
 
@@ -58,7 +59,7 @@ class Director
 				end
 			end
 		end
-		10.times do
+	    TAKARA.times do
 			pos = setpos
 			@takaras << Takara.new(pos[0], pos[1])
 		end
@@ -142,7 +143,7 @@ class Director
 		end
 
 
-		Window.draw_alpha(0, 0, @red, 100 - @player.life)
+		Window.draw_alpha(0, 0, @red, (Player::LIFE - @player.life) / (Player::LIFE / 2))
 	end
 
 	def pos_limit?(x,y,image_width, image_height)

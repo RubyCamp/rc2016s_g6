@@ -5,7 +5,7 @@ class Same < Sprite
 
 	SEARCH_AREA_X = 32 * 5
 	SEARCH_AREA_Y = 32 * 2
-
+	STOP_TIME = 40
 	#今表示しているサメの画像
 	attr_accessor :image_num
 
@@ -31,7 +31,7 @@ class Same < Sprite
  		self.dx, self.dy = [1,-1].sample, 1 #最初の進行方向をランダム
  		self.dash_dx, self.dash_dy = 3, 3
  		self.shark_direction = true	#最初は右向き
- 		self.collision = [self.image.width / 2, self.image.height / 2, 32]
+ 		self.collision = [self.image.width / 2, self.image.height / 2, 23]
  		self.init_x, self.init_y = a, b
  		self.image_num = 0
  		self.shark_direction = 0
@@ -43,7 +43,6 @@ class Same < Sprite
 		unless @stop_cnt
   	player = Director.instance.player
  		map = Director.instance.map
- 		#self.collision = [self.x, self.y, self.x + 64, self.y + 32]
  		#サメが移動する方向に合わせて画像を反転させる
  		if dx > 0
  			self.shark_direction_flag = true
@@ -107,7 +106,7 @@ class Same < Sprite
 
  		if obj.is_a?(Esa)
  			self.isFind_Player = false
- 			@stop_cnt = 30
+ 			@stop_cnt = STOP_TIME
  		end
  	end
 
