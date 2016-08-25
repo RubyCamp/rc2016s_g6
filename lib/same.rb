@@ -134,14 +134,14 @@ class Same < Sprite
  	end
 
   def movable?(map,d,sp) #(Director.instance.map,d方向,spスピード)
-    x,x_end = self.x , self.x+self.image.width
-    y,y_end = self.y , self.y+self.image.height
+		x,x_mid,x_end = self.x ,self.x+self.image.width/2, self.x+self.image.width
+    y,y_mid,y_end = self.y ,self.y+self.image.height/2, self.y+self.image.height
     case d
-      when :left  then return map.movable?(x-sp, y) && map.movable?(x-sp, y_end-1)
-      when :right then return map.movable?(x_end+sp, y) && map.movable?(x_end+sp, y_end-1)
-      when :down  then return map.movable?(x, y_end+sp) && map.movable?(x_end-sp, y_end-1)
-      when :up    then return map.movable?(x, y-sp) && map.movable?(x_end, y-sp)
-      when :g     then return map.movable?(x, y_end) && map.movable?(x_end, y_end)
+    when :left  then return map.movable?(x-sp, y)       && map.movable?(x-sp, y_end-1)      && map.movable?(x-sp, y_mid)
+    when :right then return map.movable?(x_end+sp, y)   && map.movable?(x_end+sp, y_end-1)  && map.movable?(x_end+sp, y_mid)
+    when :down  then return map.movable?(x, y_end+sp-1) && map.movable?(x_end, y_end+sp-1)  && map.movable?(x_mid, y_end+sp-1)
+    when :up    then return map.movable?(x, y-sp)       && map.movable?(x_end, y-sp)        && map.movable?(x_mid, y-sp)
+    when :g     then return map.movable?(x, y_end)      && map.movable?(x_end, y_end)       && map.movable?(x_mid, y_end)
     end
   end
 
