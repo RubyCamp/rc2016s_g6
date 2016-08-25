@@ -4,19 +4,18 @@ class Score
 
 	#新しいスコアが引数
 	def initialize(score)
-		@io = File.open("score.txt", "r+")
-		@new_score = score
+		@io = File.open("lib/score.dat", "r+")
 		self.score = []
-		self.loadscore
 		self.score << score
-		self.score.sort
+		self.loadscore
+		self.score.reverse!
 		self.writescore
 	end
 
 	#スコアを読み込むメソッド
 	def loadscore
 		ary = @io.readlines
-		ary.each_line do |line|
+		ary.each do |line|
 			line.chomp!
 			self.score << line.to_i
 		end
@@ -33,9 +32,10 @@ class Score
 
 	#上位五名を知る配列で返すメソッド
 	def top_score 
+		top = []
 		5.times do |i|
-			top = []
 			top << self.score[i]
-			return top
+		end
+		return top
 	end
 end
