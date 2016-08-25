@@ -47,6 +47,9 @@
   end
 
   def block(x, y)
+    if x < 0 || x > @map_x_size || y < 0 || y > @map_y_size
+      return -1
+    end
     return self[x,y]
   end
 
