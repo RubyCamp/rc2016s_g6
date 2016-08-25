@@ -47,9 +47,16 @@ class Director
 		@ghosts = []
 		pos = setpos
 		@objects << Ginchaku.new(pos[0], pos[1])
-		3.times { @objects << Awa.new(rand(@map.width), rand(@map.height)) }
+		3.times do
+			pos = setpos_ex(64, 64)
+			@objects << Awa.new(pos[0], pos[1])
+		end
 		@characters += @objects
-		2.times { @enemies << Same.new(rand(@map.width), rand((@map.height/4)..@map.height)) }
+		2.times do
+			pos = setpos_ex(92, 46)
+			redo if pos[1] < Window.height * 3 / 4
+			@enemies << Same.new(pos[0], pos[1])
+		end
 		@characters += @enemies
 		@player = Player.new
 		@characters << @player
@@ -102,7 +109,15 @@ class Director
 		begin
 			x = rand(@map.width)
 			y = rand(@map.height)
-		end while pos_limit?(x,y,image_width,image_height) || @map.block?(x/32, y/32)
+			block = false
+			3.times do |i|
+				2.times do |j|
+					if @map.block?(x / 32 + i, y / 32 + j)
+						block = true
+					end
+				end
+			end
+		end while pos_limit?(x,y,image_width,image_height) || block
 		return [x,y]
 	end
 
