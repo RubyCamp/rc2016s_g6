@@ -64,13 +64,20 @@ class Director
 		@characters.each do |char|
 			char.target = @render_target
 		end
+		@esas = []
 	end
 
 	def play
 		count_down
-#		if Input.keyPush(K_X)
-
-#		end
+		if Input.keyPush?(K_X)
+			if @esas.length < ESA_LIMIT
+				esa = Esa.new(@player.x, @player.y)
+				esa.target = @render_target
+				@esas << esa
+				@objects << esa
+				@characters << esa
+			end
+		end
 		Sprite.update(@characters)
 		Sprite.check(@characters, @characters)
 		@takaras.each do |takara|
