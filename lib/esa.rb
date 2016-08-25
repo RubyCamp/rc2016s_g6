@@ -8,6 +8,7 @@ class Esa < Sprite
 		self.image = Image.load(image_path("esa.png"))
 		self.image.set_color_key(C_WHITE)
 		self.x, self.y = a, b
+		self.collision = [self.image.width / 2, self.image.height / 2, 25]
 	end
 
 	def hit(obj)

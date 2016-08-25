@@ -3,8 +3,8 @@ class Same < Sprite
 	attr_accessor :dx, :dy
 	attr_accessor :dash_dx, :dash_dy
 
-	SEARCH_AREA_X = 32 * 5
-	SEARCH_AREA_Y = 32 * 1
+	SEARCH_AREA_X = 32 * 7
+	SEARCH_AREA_Y = 32 * 3
 	STOP_TIME = 60
 	DX = 0.5
 	#今表示しているサメの画像
@@ -32,7 +32,7 @@ class Same < Sprite
  		self.dx, self.dy = [DX,-DX].sample, 1 #最初の進行方向をランダム
  		self.dash_dx, self.dash_dy = 3, 3
  		self.shark_direction = true	#最初は右向き
- 		self.collision = [self.image.width / 2, self.image.height / 2, 23]
+ 		self.collision = [self.image.width / 2, self.image.height / 2, 20]
  		self.init_x, self.init_y = a, b
  		self.image_num = 0
  		self.shark_direction = 0
