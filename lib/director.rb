@@ -86,6 +86,8 @@ class Director
 		end
 		@esas = []
 		@esacount = ESA_LIMIT
+
+		@red = Image.new(800, 600, [255, 0, 0])
 	end
 
 	def play
@@ -131,6 +133,9 @@ class Director
 		if game_over? || @ship.clear
 			Scene.set_current_scene(:ending)
 		end
+
+
+		Window.draw_alpha(0, 0, @red, 100 - @player.life)
 	end
 
 	def pos_limit?(x,y,image_width, image_height)
