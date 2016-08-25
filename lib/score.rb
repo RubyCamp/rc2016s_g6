@@ -3,11 +3,11 @@ class Score
 	attr_accessor :score
 
 	#新しいスコアが引数
-	def initialize(score)
+	def initialize(score, flg)
 		map = MapSelect.instance.map.sub("images/", "lib/").sub(".", "_score.")
 		@io = File.open(map, "a+")
 		self.score = []
-		self.score << score
+		self.score << score if flg
 		self.loadscore
 		self.score.sort!
 		self.score.reverse!
