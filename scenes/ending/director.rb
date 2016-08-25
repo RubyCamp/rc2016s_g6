@@ -1,11 +1,21 @@
 require_relative '../../lib/score'
 
-class Ending
+class Ending #定数と@color1及び2の数字を変える
+	X1 = 200
+	Y1 = 350
+	SIZE1 = 40
+	X2 = 500
+	Y2 = 350
+	SIZE2 = 30
 	def initialize
-		@font1 = Font.new(40)
-		@font2 = Font.new(25)
+		@color1 = [0,0,0]
+		@color2 = [0,0,0]
+		@font1 = Font.new(SIZE1)
+		@font2 = Font.new(SIZE2)
 		@score = nil
-#		@bg_img = Image.load("images/?????????????.png")
+		@img_clear = Image.load("images/gameclear.png")
+		@img_gameover = Image.load("images/gameover.png")
+		@img = nil
 	end
 
 	def play
@@ -13,16 +23,16 @@ class Ending
 			@score = Director.instance.player.score + Director.instance.time_count
 			@scorei  = Score.new(@score)
 			@ranking = @scorei.top_score
-#			str = []
-#			@ranking.each_with_index do |ranking, i|
-#				str << ranking
-#			end
-#			@string = @ranking.join("\n")
+			if Director.instance.time_count == 0
+				@img = @img_gameover
+			else
+				@img = @img_clear
+			end
 		end
-#		Window.draw(0, 0, @bg_img)
-		Window.draw_font(500, 200, "得点: #{@score}", @font1)
+		Window.draw(0, 0, @img)
+		Window.draw_font(X1, Y1, "得点: #{@score}", @font1, color:@color1)
 		@ranking.each_with_index do |rank, i|
-			Window.draw_font(500, 300 + i * 25, "#{i + 1}位: #{rank}", @font2)
+			Window.draw_font(X2, Y2 + i * SIZE2, "#{i + 1}位: #{rank}", @font2, color:@color2)
 		end
 		if Input.keyPush?(K_SPACE)
 			exit
