@@ -140,8 +140,8 @@ class Director
 			x = rand(@map.width)
 			y = rand(@map.height)
 			block = false
-			3.times do |i|
-				2.times do |j|
+			4.times do |i|
+				3.times do |j|
 					if x + i * 32 < 0 || x + i * 32 > @map.width || y + j * 32 < 0 || y + j * 32 > @map.height
 						block = true
     				elsif @map.block(x / 32 + i, y / 32 + j) != 0
