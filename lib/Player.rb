@@ -1,10 +1,13 @@
 class Player < Sprite
   attr_reader :life, :score, :pos_x, :pos_y
-
+  @@images = []
   def initialize(image = nil)
-    image = Image.load("images/player.png")
-    image.set_color_key(C_WHITE)
-    super(800/2 - image.width/2, 600/2 - image.height/2, image)
+    super(400-32,300-16) #画面中央
+    @@images << Image.load("images/player.png")
+    @@images << Image.load("images/player2.png")
+    @@images.each{|i|i.set_color_key(C_WHITE)}
+    self.image = @@images[0]
+    # super(800/2 - self.image.width/2, 600/2 - self.image.height/2)
     @sounds = {}
     @sounds[:eat] = Sound.new("music/eat-meat1.wav")
     @sounds[:fear] = Sound.new("music/fear1.wav")
@@ -25,6 +28,7 @@ class Player < Sprite
   def update
     self.life_decrease #時間経過でライフ減少
     vanish if @life <= 0
+    self.image = @@images[@cnt/11] #プレイヤーのアニメーション
     map = Director.instance.map
     dx,dy,sp = @dx,@dy,2
     if Input.key_down?(K_C) # cダッシュ
