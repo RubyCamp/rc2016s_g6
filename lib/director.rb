@@ -20,10 +20,13 @@ class Director
 	attr_reader :map, :same, :player, :time_count, :esacount
 
 	def initialize
+		@newflg = true
+	end
+	def newall
 		@font = Font.new(25)
 		@start_time = Time.now
 		@time_count = TIME_LIMIT
-		@map = Map.new("images/map.dat")
+		@map = Map.new(MapSelect.instance.map)
 		@render_target = RenderTarget.new(@map.width, @map.height)
 		@info_window = InfoWindow.new(@time_count)
 		@characters = []
@@ -91,6 +94,10 @@ class Director
 	end
 
 	def play
+		if @newflg
+			newall
+			@newflg = false
+		end
 		count_down
 		if Input.keyPush?(K_X)
 			if @esacount > 0
