@@ -86,3 +86,5 @@ Ruby合宿
 
 directer.rb
 　・はシングルトンをrequirしてmapとplayerを包括する
+
+test
