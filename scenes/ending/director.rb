@@ -25,7 +25,7 @@ class Ending #定数と@color1及び2の数字を変える
 			if Director.instance.time_count == 0
 				@img = @img_gameover
 				life = 0
-				@flg = false
+				@flg = true #false
 			else
 				@img = @img_clear
 				@flg = true
