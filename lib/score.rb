@@ -3,11 +3,11 @@ class Score
 	attr_accessor :score
 
 	#新しいスコアが引数
-	def initialize(score, flg)
-		map = MapSelect.instance.map.sub("images/", "lib/").sub(".", "_score.")
+	def initialize(score)
+		map = MapSelect.instance.map.sub("images/", "score/").sub(".", "_score.")
 		@io = File.open(map, "a+")
 		self.score = []
-		self.score << score if flg
+		self.score << score
 		self.loadscore
 		self.score.sort!
 		self.score.reverse!
@@ -35,14 +35,5 @@ class Score
 			end
 		end
 		@io.close
-	end
-
-	#上位五名を知る配列で返すメソッド
-	def top_score 
-		top = []
-		5.times do |i|
-			top << self.score[i]
-		end
-		return top
 	end
 end

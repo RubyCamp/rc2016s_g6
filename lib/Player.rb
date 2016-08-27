@@ -1,10 +1,10 @@
 class Player < Sprite
-  attr_reader :life, :score, :pos_x, :pos_y
+  attr_reader :life, :score
   LIFE = 100
   @@images = []
-  def initialize(image = nil)
+  def initialize(x, y)
     @@images << Image.load("images/player.png")
-    super(Window.width/2-@@images[0].width/2,Window.height/2-@@images[0].height/2) #画面中央
+    super
     @@images << Image.load("images/player2.png")
     @@images.each{|i|i.set_color_key(C_WHITE)}
     self.image = @@images[0]
@@ -21,8 +21,6 @@ class Player < Sprite
 		@font = Font.new(48)
     @dx = 0
     @dy = 1 #沈む
-    @pos_x = 0
-    @pos_y = 0
   end
 
   def update
@@ -60,18 +58,6 @@ class Player < Sprite
   end
 
   def move(dx,dy)
-=begin
-    if (dx < 0 || @x + Window.width/2 > 0) && ( dx > 0 || @x - Window.width*3/2 + self.image.width < 0)
-      @pos_x -= dx
-      self.x += Window.width/2
-    end
-    if (dy < 0 || @y + Window.height/2 > 0) && (dy > 0 || @y - Window.height*3/2  < 0)
-      @pos_y -= dy
-      self.y += Window.height/2
-    end
-=end
-    @pos_x += dx
-    @pos_y += dy
     self.x += dx
     self.y += dy
   end

@@ -1,10 +1,10 @@
-require_relative 'title/director'
-require_relative 'tutorial/tutorial'
-require_relative 'mapselect/mapselect'
+require_relative 'title'
+require_relative 'tutorial'
+require_relative 'mapselect'
 require_relative '../lib/director'
-require_relative 'ending/director'
+require_relative 'ending'
 
-Scene.add_scene(Title::Director.new, :title)
+Scene.add_scene(Title.new, :title)
 Scene.add_scene(Tutorial.new, :tutorial)
 Scene.add_scene(MapSelect.instance, :mapselect)
 Scene.add_scene(Director.instance, :play)

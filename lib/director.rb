@@ -17,7 +17,7 @@ class Director
 	SAME = 5
 	AWA = 4
 	TAKARA = 15
-	GINCHAKU = 1
+	GINCHAKU = 3
 	include Singleton
 	attr_reader :map, :same, :player, :time_count, :esacount
 
@@ -25,8 +25,8 @@ class Director
 		@new_flg = true
 	end
 	def new_all
+		@ranges = []
 		@red = Image.new(800, 600, [255, 0, 0])
-		@font = Font.new(25)
 		@start_time = Time.now
 		@time_count = TIME_LIMIT
 		@map = Map.new(MapSelect.instance.map)
@@ -36,31 +36,51 @@ class Director
 		ship_new
 		possible_new
 		@takaras = []
-	    TAKARA.times do
+	    TAKARA.times do |i|
 			pos = setpos
 			@takaras << Takara.new(pos[0], pos[1])
+			x = @takaras[i].x
+			y = @takaras[i].y
+			img = @takaras[i].image
+			@ranges << [x..(x + img.width), y..(y + img.height)]
 		end
 		@characters += @takaras
 		@ginchakus = []
-		GINCHAKU.times do
+		GINCHAKU.times do |i|
 			pos = setpos
 			@ginchakus << Ginchaku.new(pos[0], pos[1])
+			x = @ginchakus[i].x
+			y = @ginchakus[i].y
+			img = @ginchakus[i].image
+			@ranges << [x..(x + img.width), y..(y + img.height)]
 		end
 		@characters += @ginchakus
 		@awas = []
-		AWA.times do
+		AWA.times do |i|
 			pos = setpos_ex(64, 64)
 			@awas << Awa.new(pos[0], pos[1])
+			x = @awas[i].x
+			y = @awas[i].y
+			img = @awas[i].image
+			@ranges << [x..(x + img.width), y..(y + img.height)]
 		end
 		@characters += @awas
 		@sames = []
-		SAME.times do
-			pos = setpos_ex(92, 46)
-			redo if pos[1] < Window.height * 3 / 4
+		SAME.times do |i|
+			pos = setpos_ex(92, 46, top_y: @map.height / 3)
 			@sames << Same.new(pos[0], pos[1])
+			x = @sames[i].x
+			y = @sames[i].y
+			img = @sames[i].image
+			@ranges << [x..(x + img.width), y..(y + img.height)]
 		end
 		@characters += @sames
-		@player = Player.new
+		ship_x = (@ship.x - 32)..(@ship.x + @ship.image.width + 32)
+		ship_y = (@ship.y - 32)..(@ship.y + @ship.image.height + 32)
+		begin
+			pos = setpos_ex(61, 30, end_y: @map.height / 4)
+		end while pos == [ship_x, ship_y]
+		@player = Player.new(pos[0],pos[1])
 		@characters << @player
 		@characters.each do |char|
 			char.target = @render_target
@@ -80,13 +100,7 @@ class Director
 		end
 		count_down
 		if Input.keyPush?(K_X)
-			if @esacount > 0
-				@esacount -= 1
-				esa = Esa.new(@player.x, @player.y)
-				esa.target = @render_target
-				@esas << esa
-				@characters << esa
-			end
+			esa_new
 		end
 		Sprite.update(@characters)
 		Sprite.check(@characters, @characters)
@@ -95,9 +109,9 @@ class Director
 		Sprite.clean(@takaras)
 		@render_target.draw(0,0,@map.draw)
 		Sprite.draw(@characters)
-		Window.draw(-@player.pos_x,-@player.pos_y,@render_target)
+		window
+		Window.draw(@window_x,@window_y,@render_target)
 		@info_window.draw
-#		Window.draw_font(10, 550,"#{Window.real_fps}",@font)
 		if game_over? || @ship.clear
 			Scene.set_current_scene(:ending)
 		end
@@ -119,10 +133,11 @@ class Director
 		return d
 	end
 
-	def setpos_ex(image_width, image_height)
+	def setpos_ex(image_width, image_height, top_y: 0, end_y: @map.height - image_height)
 		begin
 			x = rand(@map.width - image_width)
-			y = rand(@map.height - image_height)
+			y = rand(top_y..end_y)
+			redo if doubling?(@ranges, [x..(x + image_width), y..(y + image_height)])
 			block = false
 			dx = dxdy(image_width)
 			dy = dxdy(image_height)
@@ -141,7 +156,27 @@ class Director
 		return [x,y]
 	end
 
+	def doubling?(ranges, range)
+		flg = false
+		range_x = [range[0].first, range[0].end]
+		range_y = [range[1].first, range[1].end]
+		ranges.each do |s|
+			2.times do |i|
+				if s[0].cover?(range_x[i])
+					2.times do |j|
+						if s[1].cover?(range_y[j])
+							flg = true
+							break
+						end
+					end
+				end
+			end if flg
+		end if flg
+		return flg
+	end
+
 	private
+
 	def count_down
 		@time_count = TIME_LIMIT - (Time.now - @start_time).to_i
 		@info_window.count = @time_count
@@ -171,18 +206,23 @@ class Director
 
 	def ship_new
 		pos = [-1, -1]
-		@map.map_x_size.times do |x|
-			@map.map_y_size.times do |y|
-				if @map.block(x, y) == 6
-					pos = [x * 32, y * 32 - 55]
-					break
-				end
-			end
-			if pos != [-1, -1]
+		@map.map_y_size.times do |y|
+			if @map.block(0, y) == 3
+				pos[1] = y
 				break
 			end
 		end
-		if pos != [-1, -1]
+		if pos[1] != -1
+			begin
+				x = rand((@map.map_x_size / 4)..((@map.map_x_size - 4) * 3 / 4))
+				block = false
+				3.times do |i|
+					block = true if @map.block(x + i, pos[1] + 1) != 0
+				end
+				pos[0] = x unless block
+			end while block
+			pos[0] = pos[0] * 32
+			pos[1] = pos[1] * 32 - 55
 			@ship = Ship.new(pos[0], pos[1])
 			@ship.target = @render_target
 			@characters << @ship
@@ -232,5 +272,32 @@ class Director
 				@characters << @ghost
 			end
 		end
+	end
+
+	def esa_new
+		if @esacount > 0
+			@esacount -= 1
+			esa = Esa.new(@player.x, @player.y)
+			esa.target = @render_target
+			@esas << esa
+			@characters << esa
+		end
+	end
+
+	def window
+		player_x = @player.x + @player.image.width / 2
+		player_y = @player.y + @player.image.height / 2
+		if player_x < Window.width / 2
+			player_x = Window.width / 2
+		elsif player_x > @map.width - Window.width / 2
+			player_x = @map.width - Window.width / 2
+		end
+		if player_y < Window.height / 2
+			player_y = Window.height / 2
+		elsif player_y > @map.height - Window.height / 2
+			player_y = @map.height - Window.height / 2
+		end
+		@window_x = Window.width / 2 - player_x
+		@window_y = Window.height / 2 - player_y
 	end
 end
